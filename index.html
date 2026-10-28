@@ -479,51 +479,12 @@
                                 <h3 class="font-heading font-bold text-lg text-on-surface">Thử Tài Đố Vui: Hiệp Sĩ Tri Thức</h3>
                             </div>
                         </div>
-                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
+                        <button onclick="switchTab('tab-dau-truong')" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-xs font-bold">
                             <span class="material-symbols-outlined text-sm">redeem</span> Đổi Quà Thật Tại Thư Viện
-                        </span>
-                    </div>
-
-                    <!-- Question Container -->
-                    <div class="bg-surface-container-low p-5 rounded-xl space-y-3">
-                        <div class="flex items-start gap-2.5">
-                            <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0">?</span>
-                            <p id="quiz-question-text" class="font-heading font-bold text-sm text-on-surface leading-snug">
-                                Trong tác phẩm "Dế Mèn Phiêu Lưu Ký", người bạn đầu tiên cùng Dế Mèn kết nghĩa anh em và cùng chu du thiên hạ là ai?
-                            </p>
-                        </div>
-
-                        <!-- Quiz Options Grid -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2" id="quiz-options">
-                            <button onclick="checkAnswer(this, false)" class="quiz-btn w-full p-3 rounded-lg bg-white border border-surface-container-high text-left text-xs text-on-surface hover:bg-sky-50 transition-all flex items-center justify-between group">
-                                <span id="opt-0">A. Chị Nhà Trò bé nhỏ</span>
-                                <span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center text-[10px] font-bold text-on-surface-variant group-hover:bg-primary group-hover:text-white">A</span>
-                            </button>
-                            <button onclick="checkAnswer(this, true)" class="quiz-btn w-full p-3 rounded-lg bg-white border border-surface-container-high text-left text-xs text-on-surface hover:bg-sky-50 transition-all flex items-center justify-between group">
-                                <span id="opt-1">B. Dế Trũi dũng cảm</span>
-                                <span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center text-[10px] font-bold text-on-surface-variant group-hover:bg-primary group-hover:text-white">B</span>
-                            </button>
-                            <button onclick="checkAnswer(this, false)" class="quiz-btn w-full p-3 rounded-lg bg-white border border-surface-container-high text-left text-xs text-on-surface hover:bg-sky-50 transition-all flex items-center justify-between group">
-                                <span id="opt-2">C. Bọ Ngựa kiêu hãnh</span>
-                                <span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center text-[10px] font-bold text-on-surface-variant group-hover:bg-primary group-hover:text-white">C</span>
-                            </button>
-                            <button onclick="checkAnswer(this, false)" class="quiz-btn w-full p-3 rounded-lg bg-white border border-surface-container-high text-left text-xs text-on-surface hover:bg-sky-50 transition-all flex items-center justify-between group">
-                                <span id="opt-3">D. Dế Choắt hiền lành</span>
-                                <span class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center text-[10px] font-bold text-on-surface-variant group-hover:bg-primary group-hover:text-white">D</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Answer Feedback Box -->
-                    <div id="quiz-feedback" class="hidden p-3.5 rounded-xl bg-emerald-100 text-emerald-900 flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2 font-bold">
-                            <span class="material-symbols-outlined text-lg">check_circle</span>
-                            <span>Chính xác tuyệt vời! Bé được cộng +20 Sao ⭐</span>
-                        </div>
-                        <button onclick="resetQuiz()" class="px-3 py-1.5 rounded-full bg-emerald-700 text-white font-bold hover:bg-emerald-800 transition-colors">
-                            Thử lại
                         </button>
                     </div>
+
+                    <div id="home-quiz"></div>
                 </div>
 
                 <!-- Leaderboard Side Column -->
@@ -652,6 +613,11 @@
                     <button onclick="filterGrade('5')" class="grade-filter-btn p-3 rounded-2xl bg-sky-200 border border-sky-300 text-left hover:scale-105 transition-all space-y-1 text-sky-950">
                         <span class="font-heading font-bold text-xs block">Khối 5</span>
                         <span class="text-[10px] text-sky-900 block">Bách Khoa & Danh Nhân</span>
+                    </button>
+                    <!-- Sách không thuộc riêng khối nào; trên máy tính nằm ngay dưới Khối 5 -->
+                    <button onclick="filterGrade('hh')" class="grade-filter-btn lg:col-start-6 p-3 rounded-2xl bg-fuchsia-100 border border-fuchsia-300 text-left hover:scale-105 transition-all space-y-1 text-fuchsia-950">
+                        <span class="font-heading font-bold text-xs block">Sách Hỗn Hợp</span>
+                        <span class="text-[10px] text-fuchsia-900 block">Dùng chung nhiều khối</span>
                     </button>
                 </div>
             </div>
@@ -838,7 +804,7 @@
                             Đấu Trường Đọc Sách & Đổi Quà Sao Tri Thức
                         </h1>
                         <p class="text-sm text-sky-100 max-w-xl leading-relaxed">
-                            Chinh phục thử thách đọc mỗi ngày, mở khóa huy hiệu lấp lánh và đổi quà trực tiếp tại Thư Viện Phù Đổng!
+                            Trả lời đố vui về những cuốn sách hay, leo lên Bảng Vàng và dùng sao để đổi quà thật tại Thư Viện Phù Đổng!
                         </p>
                     </div>
 
@@ -851,16 +817,64 @@
                                 </div>
                                 <div>
                                     <div id="arena-star-count" class="font-heading font-extrabold text-2xl text-amber-600">125 <span class="text-sm font-bold text-on-surface">Sao</span></div>
-                                    <div class="text-[10px] text-emerald-700 font-bold">+30 Sao tuần này</div>
+                                    <div class="text-[10px] text-emerald-700 font-bold">Đúng đố vui +20 • Đọc xong sách +15</div>
                                 </div>
                             </div>
-                            <button onclick="openRedeemModal()" class="w-full py-2.5 rounded-full bg-amber-700 hover:bg-amber-800 text-white font-heading font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5">
+                            <button onclick="scrollToRewards()" class="w-full py-2.5 rounded-full bg-amber-700 hover:bg-amber-800 text-white font-heading font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5">
                                 <span class="material-symbols-outlined text-base">card_giftcard</span>
                                 <span>Đổi Quà Ngay</span>
                             </button>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- THỬ TÀI ĐỐ VUI + BẢNG VÀNG -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <div class="lg:col-span-7 bg-white p-5 sm:p-6 rounded-custom border border-surface-container-high shadow-sm space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl"><i class="fa-solid fa-medal"></i></div>
+                            <div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700">Đấu Trường Đọc Sách</span>
+                                <h2 class="font-heading font-bold text-xl text-on-surface leading-tight">Thử Tài Đố Vui</h2>
+                            </div>
+                        </div>
+                        <span id="arena-my-stats" class="px-3 py-1.5 rounded-full bg-sky-100 text-primary text-xs font-bold"></span>
+                    </div>
+                    <div id="arena-quiz"></div>
+                </div>
+
+                <div class="lg:col-span-5 bg-white p-5 sm:p-6 rounded-custom border border-surface-container-high shadow-sm space-y-4">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center"><i class="fa-solid fa-trophy"></i></span>
+                            <div>
+                                <h3 class="font-heading font-bold text-base text-on-surface leading-tight">Bảng Vàng Đấu Trường</h3>
+                                <p class="text-[11px] text-on-surface-variant">Xếp theo số câu đúng ngay lần đầu trả lời</p>
+                            </div>
+                        </div>
+                        <button onclick="loadArenaBoard()" class="w-8 h-8 rounded-full hover:bg-surface-container text-on-surface-variant" title="Cập nhật"><i class="fa-solid fa-rotate"></i></button>
+                    </div>
+                    <div id="arena-board" class="space-y-2 text-xs"></div>
+                    <div id="arena-my-rank"></div>
+                </div>
+            </div>
+
+            <!-- NHẬN QUÀ BẰNG SAO -->
+            <div id="arena-rewards-wrap" class="bg-white p-5 sm:p-6 rounded-custom border border-surface-container-high shadow-sm space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center text-xl"><i class="fa-solid fa-gift"></i></div>
+                        <div>
+                            <h2 class="font-heading font-bold text-xl text-on-surface leading-tight">Nhận Quà Bằng Sao</h2>
+                            <p class="text-xs text-on-surface-variant">Đổi quà xong, em đến bàn thủ thư để nhận quà thật nhé!</p>
+                        </div>
+                    </div>
+                    <div class="text-xs font-bold text-amber-700">Trả lời đúng: +20 ⭐ • Đọc xong 1 cuốn sách: +15 ⭐</div>
+                </div>
+                <div id="arena-rewards" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4"></div>
+                <div id="arena-my-gifts"></div>
             </div>
         </section>
 
@@ -883,50 +897,55 @@
         <section id="tab-hoat-dong" class="tab-content hidden space-y-8">
 
         
-        <!-- HERO BANNER SECTION -->
-        <div class="relative bg-gradient-to-b from-sky-50 via-amber-50/40 to-slate-50 py-10 lg:py-14 overflow-hidden rounded-custom border border-surface-container-high">
-            <!-- Decorative floating background elements -->
-            <div class="absolute -top-12 -right-12 w-64 h-64 bg-amber-200/40 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute top-1/2 -left-20 w-80 h-80 bg-sky-200/40 rounded-full blur-3xl pointer-events-none"></div>
-
-            <div class="px-4 sm:px-8 relative z-10">
-                <div class="text-center max-w-3xl mx-auto">
-                    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-800 text-xs sm:text-sm font-bold mb-4">
-                        <i class="fa-solid fa-star text-amber-500"></i> Ươm Mầm Tri Thức - Bồi Dưỡng Tương Lai
-                    </span>
-                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-800 tracking-tight leading-tight">
-                        Hoạt Động Thư Viện <span class="text-sky-600 inline-block">Sôi Nổi & Bổ Ích</span>
-                    </h2>
-                    <p class="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
-                        Nơi mỗi ngày đến trường là một niềm vui! Cùng khám phá các tiết đọc thú vị, hội thi hấp dẫn và những cuốn sách tuyệt vời đang chờ đón các em học sinh.
-                    </p>
-
-                    <!-- SEARCH & FILTER BAR -->
-                    <div class="mt-8 bg-white p-3 sm:p-4 rounded-3xl shadow-lg border border-slate-100 max-w-2xl mx-auto">
-                        <div class="relative flex items-center">
-                            <i class="fa-solid fa-magnifying-glass absolute left-4 text-slate-400 text-lg"></i>
-                            <input type="text" id="act-search" oninput="actFilter()" placeholder="Tìm kiếm hoạt động, ngày hội, tiết đọc..." class="w-full pl-12 pr-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all">
-                        </div>
-                    </div>
+        <!-- THANH TIÊU ĐỀ GỌN: tìm kiếm + lọc -->
+        <div class="bg-white rounded-custom border border-surface-container-high px-4 sm:px-6 py-4 flex flex-col lg:flex-row lg:items-center gap-3">
+            <div class="flex items-center gap-3 shrink-0">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-sky-500 to-sky-700 text-white flex items-center justify-center text-lg shadow-md"><i class="fa-solid fa-book-open-reader"></i></div>
+                <div>
+                    <h2 class="font-heading font-bold text-lg sm:text-xl text-slate-800 leading-tight">Hoạt Động Thư Viện</h2>
+                    <p class="text-xs text-slate-500">Tin tức, hình ảnh đọc sách và giới thiệu sách hay</p>
                 </div>
+            </div>
+            <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-2 lg:justify-end">
+                <div class="flex gap-1.5 overflow-x-auto pb-1 sm:pb-0 min-w-0" id="act-filters">
+                    <button onclick="actSetCategory(this, 'all')" class="act-tab shrink-0 px-3 py-1.5 rounded-full text-xs font-bold transition-all border border-slate-200 flex items-center gap-1.5 whitespace-nowrap active"><i class="fa-solid fa-border-all"></i> Tất cả</button>
+                    <button onclick="actSetCategory(this, 'sach-moi')" class="act-tab shrink-0 px-3 py-1.5 rounded-full text-xs font-bold transition-all border border-slate-200 flex items-center gap-1.5 whitespace-nowrap bg-white hover:bg-slate-100 text-slate-700"><i class="fa-solid fa-bullhorn text-emerald-500"></i> Giới thiệu sách</button>
+                    <button onclick="actSetCategory(this, 'tiet-doc')" class="act-tab shrink-0 px-3 py-1.5 rounded-full text-xs font-bold transition-all border border-slate-200 flex items-center gap-1.5 whitespace-nowrap bg-white hover:bg-slate-100 text-slate-700"><i class="fa-solid fa-book-open text-sky-500"></i> Tiết đọc</button>
+                    <button onclick="actSetCategory(this, 'ngay-hoi')" class="act-tab shrink-0 px-3 py-1.5 rounded-full text-xs font-bold transition-all border border-slate-200 flex items-center gap-1.5 whitespace-nowrap bg-white hover:bg-slate-100 text-slate-700"><i class="fa-solid fa-award text-amber-500"></i> Ngày hội & Cuộc thi</button>
+                    <button onclick="actSetCategory(this, 'phong-trao')" class="act-tab shrink-0 px-3 py-1.5 rounded-full text-xs font-bold transition-all border border-slate-200 flex items-center gap-1.5 whitespace-nowrap bg-white hover:bg-slate-100 text-slate-700"><i class="fa-solid fa-users text-purple-500"></i> Phong trào</button>
+                </div>
+                <div class="relative sm:w-52 shrink-0">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="search" id="act-search" oninput="actFilter()" placeholder="Tìm hoạt động, tin tức…" class="w-full pl-9 pr-3 py-2 rounded-full bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white">
+                </div>
+            </div>
+        </div>
 
-                <!-- CATEGORY FILTER BUTTONS -->
-                <div class="mt-8 flex flex-wrap justify-center gap-2 sm:gap-3" id="act-filters">
-                    <button onclick="actSetCategory(this, 'all')" class="act-tab active px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all border border-slate-200 flex items-center gap-2">
-                        <i class="fa-solid fa-border-all"></i> Tất Cả
-                    </button>
-                    <button onclick="actSetCategory(this, 'tiet-doc')" class="act-tab bg-white hover:bg-slate-100 text-slate-700 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all border border-slate-200 flex items-center gap-2">
-                        <i class="fa-solid fa-book-open text-sky-500"></i> Tiết Đọc Thư Viện
-                    </button>
-                    <button onclick="actSetCategory(this, 'ngay-hoi')" class="act-tab bg-white hover:bg-slate-100 text-slate-700 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all border border-slate-200 flex items-center gap-2">
-                        <i class="fa-solid fa-award text-amber-500"></i> Ngày Hội & Cuộc Thi
-                    </button>
-                    <button onclick="actSetCategory(this, 'sach-moi')" class="act-tab bg-white hover:bg-slate-100 text-slate-700 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all border border-slate-200 flex items-center gap-2">
-                        <i class="fa-solid fa-bullhorn text-emerald-500"></i> Giới Thiệu Sách
-                    </button>
-                    <button onclick="actSetCategory(this, 'phong-trao')" class="act-tab bg-white hover:bg-slate-100 text-slate-700 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all border border-slate-200 flex items-center gap-2">
-                        <i class="fa-solid fa-users text-purple-500"></i> Phong Trào & Tủ Sách
-                    </button>
+        <!-- SECTION 3: TIN TỨC -->
+        <div class="py-10 bg-white rounded-custom border border-surface-container-high">
+            <div class="px-4 sm:px-8">
+                <div class="flex justify-between items-end mb-8 gap-4">
+                    <div>
+                        <span class="text-emerald-600 font-bold text-sm tracking-wider uppercase"><i class="fa-solid fa-newspaper mr-1"></i> Nhật Ký Thư Viện • Sách Hay Mỗi Tháng</span>
+                        <h3 class="text-2xl sm:text-3xl font-black text-slate-800 mt-1">Tin Tức & Giới Thiệu Sách</h3>
+                    </div>
+                    <button type="button" id="act-news-more" onclick="actToggleNews()" class="hidden text-xs font-extrabold text-sky-600 hover:text-sky-700 shrink-0"></button>
+                </div>
+                <div id="act-news" class="grid grid-cols-1 lg:grid-cols-3 gap-8"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: ẢNH & VIDEO -->
+        <div class="py-10 bg-slate-100 rounded-custom">
+            <div class="px-4 sm:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="text-amber-600 font-bold text-sm tracking-wider uppercase"><i class="fa-solid fa-camera-retro mr-1"></i> Khoảnh Khắc Đáng Nhớ</span>
+                    <h3 class="text-2xl sm:text-3xl font-black text-slate-800 mt-1">Hình Ảnh & Video Hoạt Động Đọc Sách</h3>
+                    <p class="text-slate-600 text-sm mt-2">Nụ cười và sự say mê của các em học sinh trong từng trang sách</p>
+                </div>
+                <div id="act-gallery" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+                <div class="text-center mt-6">
+                    <button type="button" id="act-gallery-more" onclick="actToggleGallery()" class="hidden px-5 py-2.5 rounded-full bg-white border border-slate-200 hover:border-amber-500 text-sm font-bold text-slate-700"></button>
                 </div>
             </div>
         </div>
@@ -947,35 +966,6 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="act-events">
                     <div class="col-span-full py-10 text-center text-slate-500 font-bold text-sm">Đang tải hoạt động…</div>
                 </div>
-            </div>
-        </div>
-
-        <!-- SECTION 2: ẢNH & VIDEO -->
-        <div class="py-10 bg-slate-100 rounded-custom">
-            <div class="px-4 sm:px-8">
-                <div class="text-center max-w-2xl mx-auto mb-10">
-                    <span class="text-amber-600 font-bold text-sm tracking-wider uppercase"><i class="fa-solid fa-camera-retro mr-1"></i> Khoảnh Khắc Đáng Nhớ</span>
-                    <h3 class="text-2xl sm:text-3xl font-black text-slate-800 mt-1">Hình Ảnh & Video Hoạt Động</h3>
-                    <p class="text-slate-600 text-sm mt-2">Nụ cười và sự say mê của các em học sinh trong từng trang sách</p>
-                </div>
-                <div id="act-gallery" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"></div>
-                <div class="text-center mt-6">
-                    <button type="button" id="act-gallery-more" onclick="actToggleGallery()" class="hidden px-5 py-2.5 rounded-full bg-white border border-slate-200 hover:border-amber-500 text-sm font-bold text-slate-700"></button>
-                </div>
-            </div>
-        </div>
-
-        <!-- SECTION 3: TIN TỨC -->
-        <div class="py-10 bg-white rounded-custom border border-surface-container-high">
-            <div class="px-4 sm:px-8">
-                <div class="flex justify-between items-end mb-8 gap-4">
-                    <div>
-                        <span class="text-emerald-600 font-bold text-sm tracking-wider uppercase"><i class="fa-solid fa-newspaper mr-1"></i> Nhật Ký Thư Viện</span>
-                        <h3 class="text-2xl sm:text-3xl font-black text-slate-800 mt-1">Tin Tức & Bài Viết Mới</h3>
-                    </div>
-                    <button type="button" id="act-news-more" onclick="actToggleNews()" class="hidden text-xs font-extrabold text-sky-600 hover:text-sky-700 shrink-0"></button>
-                </div>
-                <div id="act-news" class="grid grid-cols-1 lg:grid-cols-3 gap-8"></div>
             </div>
         </div>
 
@@ -1081,7 +1071,7 @@
                         <span class="material-symbols-outlined text-lg">add_circle</span>
                         <span>+ Thêm Sách Mới</span>
                     </button>
-                    <button onclick="openAddQuizModal()" class="px-4 py-3 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-heading font-bold text-xs shadow-md transition-all flex items-center gap-1.5">
+                    <button onclick="openQuizEditor()" class="px-4 py-3 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-heading font-bold text-xs shadow-md transition-all flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-lg">quiz</span>
                         <span>+ Thêm Câu Hỏi Đố Vui</span>
                     </button>
@@ -1161,6 +1151,26 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            <!-- Admin: Quản lý Đấu Trường -->
+            <div id="admin-arena" class="bg-white p-6 rounded-custom border border-surface-container-high shadow-sm space-y-5">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="font-heading font-bold text-xl text-on-surface">Quản Lý Đấu Trường</h2>
+                        <p class="text-xs text-on-surface-variant">Ngân hàng câu hỏi đố vui, danh sách quà tặng và yêu cầu đổi quà của học sinh</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 text-xs font-bold">
+                        <button onclick="openQuizEditor()" class="px-3.5 py-2 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center gap-1.5"><i class="fa-solid fa-circle-question"></i> Câu hỏi</button>
+                        <button onclick="openRewardEditor()" class="px-3.5 py-2 rounded-full bg-rose-500 hover:bg-rose-600 text-white flex items-center gap-1.5"><i class="fa-solid fa-gift"></i> Quà tặng</button>
+                    </div>
+                </div>
+                <div class="flex gap-1 overflow-x-auto bg-surface-container-low p-1 rounded-full text-xs font-bold" id="ar-tabs">
+                    <button onclick="arenaAdminTab('q')" data-ar="q" class="ar-tab px-3.5 py-2 rounded-full whitespace-nowrap">Câu hỏi đố vui <span class="aa-count"></span></button>
+                    <button onclick="arenaAdminTab('g')" data-ar="g" class="ar-tab px-3.5 py-2 rounded-full whitespace-nowrap">Quà tặng <span class="aa-count"></span></button>
+                    <button onclick="arenaAdminTab('d')" data-ar="d" class="ar-tab px-3.5 py-2 rounded-full whitespace-nowrap">Yêu cầu đổi quà <span class="aa-count"></span></button>
+                </div>
+                <div id="ar-body" class="text-xs"></div>
             </div>
 
             <!-- Admin: Quản lý Hoạt Động Thư Viện -->
@@ -1483,6 +1493,7 @@
                             <option value="3">Khối 3</option>
                             <option value="4" selected>Khối 4</option>
                             <option value="5">Khối 5</option>
+                            <option value="hh">Sách hỗn hợp (nhiều khối)</option>
                         </select>
                     </div>
                 </div>
@@ -1782,27 +1793,87 @@
         </div>
     </div>
 
-    <!-- ADD QUIZ MODAL -->
-    <div id="addQuizModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-custom p-6 sm:p-8 max-w-md w-full shadow-2xl border border-surface-container-high space-y-4 relative">
-            <button onclick="closeAddQuizModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-
-            <h3 class="font-heading font-bold text-lg text-on-surface">Thêm Câu Hỏi Đố Vui Mới</h3>
-            
-            <div class="space-y-2 text-xs">
+    <!-- SOẠN CÂU HỎI ĐỐ VUI (ADMIN) -->
+    <div id="quizEditor" onclick="if(event.target===this)actClose('quizEditor')" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[81] hidden flex items-start sm:items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-custom p-6 sm:p-8 max-w-xl w-full shadow-2xl border border-surface-container-high space-y-4 relative my-6">
+            <button onclick="actClose('quizEditor')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700" title="Đóng"><span class="material-symbols-outlined">close</span></button>
+            <h3 id="qe-title" class="font-heading font-bold text-lg text-on-surface flex items-center gap-2"><i class="fa-solid fa-circle-question text-amber-500"></i> Thêm Câu Hỏi Đố Vui</h3>
+            <form onsubmit="saveQuiz(event)" class="space-y-3 text-xs" novalidate>
+                <input type="hidden" id="qe-id"/>
                 <div>
-                    <label class="block font-bold mb-1">Nội dung câu hỏi</label>
-                    <input id="new-quiz-q" type="text" placeholder="Ví dụ: Ai là tác giả của truyện Cây Vú Sữa?" class="w-full p-2.5 rounded-xl border border-surface-container-high"/>
+                    <label for="qe-question" class="block font-bold mb-1">Câu hỏi <span class="text-red-500">*</span></label>
+                    <textarea id="qe-question" rows="2" maxlength="500" placeholder="Ví dụ: Ai là tác giả truyện Dế Mèn Phiêu Lưu Ký?" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"></textarea>
+                </div>
+                <div class="space-y-2">
+                    <div class="font-bold">Các phương án <span class="font-normal text-on-surface-variant">– bấm vòng tròn để chọn đáp án đúng (2–4 phương án)</span></div>
+                    <label class="flex items-center gap-2"><input type="radio" name="qe-correct" value="0" class="w-4 h-4 accent-emerald-600"/><b class="w-4">A</b><input id="qe-opt-0" type="text" maxlength="200" class="flex-1 px-3 py-2 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/></label>
+                    <label class="flex items-center gap-2"><input type="radio" name="qe-correct" value="1" class="w-4 h-4 accent-emerald-600"/><b class="w-4">B</b><input id="qe-opt-1" type="text" maxlength="200" class="flex-1 px-3 py-2 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/></label>
+                    <label class="flex items-center gap-2"><input type="radio" name="qe-correct" value="2" class="w-4 h-4 accent-emerald-600"/><b class="w-4">C</b><input id="qe-opt-2" type="text" maxlength="200" class="flex-1 px-3 py-2 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/></label>
+                    <label class="flex items-center gap-2"><input type="radio" name="qe-correct" value="3" class="w-4 h-4 accent-emerald-600"/><b class="w-4">D</b><input id="qe-opt-3" type="text" maxlength="200" class="flex-1 px-3 py-2 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/></label>
                 </div>
                 <div>
-                    <label class="block font-bold mb-1">Đáp án đúng (Viết rõ)</label>
-                    <input id="new-quiz-ans" type="text" placeholder="Dân gian Việt Nam" class="w-full p-2.5 rounded-xl border border-surface-container-high"/>
+                    <label for="qe-explain" class="block font-bold mb-1">Giải thích (hiện sau khi trả lời)</label>
+                    <input id="qe-explain" type="text" maxlength="300" placeholder="Ví dụ: Nhà văn Tô Hoài viết truyện này năm 1941." class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/>
                 </div>
-            </div>
+                <div class="grid grid-cols-2 gap-3 items-end">
+                    <div>
+                        <label for="qe-grade" class="block font-bold mb-1">Dành cho khối</label>
+                        <select id="qe-grade" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary font-bold">
+                            <option value="">Mọi khối</option><option value="1">Khối 1</option><option value="2">Khối 2</option><option value="3">Khối 3</option><option value="4">Khối 4</option><option value="5">Khối 5</option>
+                        </select>
+                    </div>
+                    <label class="flex items-center gap-2 font-bold cursor-pointer pb-2.5"><input id="qe-active" type="checkbox" class="w-4 h-4 rounded"/> Đang dùng trong Đấu Trường</label>
+                </div>
+                <div id="qe-error" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 font-medium"></div>
+                <div class="flex justify-end gap-2 pt-1">
+                    <button type="button" onclick="actClose('quizEditor')" class="px-4 py-2 rounded-full bg-surface-container hover:bg-surface-container-high font-bold">Hủy Bỏ</button>
+                    <button type="submit" class="px-6 py-2 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-bold shadow-md">Lưu Câu Hỏi</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-            <button onclick="saveNewQuiz()" class="w-full py-2.5 rounded-full bg-amber-600 text-white font-bold text-xs shadow-md">Lưu Câu Hỏi</button>
+    <!-- SOẠN QUÀ TẶNG (ADMIN) -->
+    <div id="rewardEditor" onclick="if(event.target===this)actClose('rewardEditor')" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[81] hidden flex items-start sm:items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-custom p-6 sm:p-8 max-w-md w-full shadow-2xl border border-surface-container-high space-y-4 relative my-6">
+            <button onclick="actClose('rewardEditor')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700" title="Đóng"><span class="material-symbols-outlined">close</span></button>
+            <h3 id="re-title" class="font-heading font-bold text-lg text-on-surface flex items-center gap-2"><i class="fa-solid fa-gift text-rose-500"></i> Thêm Quà Tặng</h3>
+            <form onsubmit="saveReward(event)" class="space-y-3 text-xs" novalidate>
+                <input type="hidden" id="re-id"/>
+                <div class="grid grid-cols-[80px_1fr] gap-3">
+                    <div>
+                        <label for="re-icon" class="block font-bold mb-1">Biểu tượng</label>
+                        <input id="re-icon" type="text" maxlength="4" class="w-full px-2 py-2 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary text-center text-2xl"/>
+                    </div>
+                    <div>
+                        <label for="re-name" class="block font-bold mb-1">Tên quà <span class="text-red-500">*</span></label>
+                        <input id="re-name" type="text" maxlength="100" placeholder="Ví dụ: Hộp bút màu" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-1.5 text-xl">
+                    <button type="button" onclick="pickRewardIcon('🎁')">🎁</button><button type="button" onclick="pickRewardIcon('🔖')">🔖</button><button type="button" onclick="pickRewardIcon('📏')">📏</button><button type="button" onclick="pickRewardIcon('📒')">📒</button><button type="button" onclick="pickRewardIcon('🖍️')">🖍️</button><button type="button" onclick="pickRewardIcon('✏️')">✏️</button><button type="button" onclick="pickRewardIcon('🏅')">🏅</button><button type="button" onclick="pickRewardIcon('📚')">📚</button><button type="button" onclick="pickRewardIcon('🧸')">🧸</button><button type="button" onclick="pickRewardIcon('🎒')">🎒</button>
+                </div>
+                <div>
+                    <label for="re-desc" class="block font-bold mb-1">Mô tả ngắn</label>
+                    <input id="re-desc" type="text" maxlength="150" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="re-cost" class="block font-bold mb-1">Số sao cần đổi <span class="text-red-500">*</span></label>
+                        <input id="re-cost" type="number" min="1" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/>
+                    </div>
+                    <div>
+                        <label for="re-stock" class="block font-bold mb-1">Số lượng còn</label>
+                        <input id="re-stock" type="number" min="0" placeholder="Để trống = không giới hạn" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/>
+                    </div>
+                </div>
+                <label class="flex items-center gap-2 font-bold cursor-pointer"><input id="re-active" type="checkbox" class="w-4 h-4 rounded"/> Hiện trong danh sách đổi quà</label>
+                <div id="re-error" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 font-medium"></div>
+                <div class="flex justify-end gap-2 pt-1">
+                    <button type="button" onclick="actClose('rewardEditor')" class="px-4 py-2 rounded-full bg-surface-container hover:bg-surface-container-high font-bold">Hủy Bỏ</button>
+                    <button type="submit" class="px-6 py-2 rounded-full bg-rose-500 hover:bg-rose-600 text-white font-bold shadow-md">Lưu Quà</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -1842,7 +1913,7 @@
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-surface-container-high/60 mt-8 pt-6 text-center">
-            © 2026 Trường Tiểu Học Phù Đổng. Hệ Thống Đọc Sách & Phân Quyền Quản Lý. <span class="opacity-70">• Phiên bản 28/10f – phân nhóm độc giả & giới hạn người xem</span>
+            © 2026 Trường Tiểu Học Phù Đổng. Hệ Thống Đọc Sách & Phân Quyền Quản Lý. <span class="opacity-70">• Phiên bản 28/10g – Đấu Trường & Sách Hỗn Hợp</span>
         </div>
     </footer>
 
@@ -1974,7 +2045,7 @@
                 if (wrap && !wrap.contains(e.target)) closeUserMenu();
             });
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') { closeAuthModal(); closePasswordModal(); closeStudentModal(); closeUserMenu(); closeQrModal(); actClose('act-register-modal'); actCloseLightbox(); actClose('act-detail-modal'); actClose('act-editor'); }
+                if (e.key === 'Escape') { closeAuthModal(); closePasswordModal(); closeStudentModal(); closeUserMenu(); closeQrModal(); actClose('quizEditor'); actClose('rewardEditor'); actClose('act-register-modal'); actCloseLightbox(); actClose('act-detail-modal'); actClose('act-editor'); }
             });
             updateAppRoleView();
             renderBookshelf();
@@ -1983,6 +2054,7 @@
             updateAppRoleView();
             handleBookLink();
             loadActivities();
+            refreshArena();
             loadLeaderboard();
         });
 
@@ -2084,7 +2156,7 @@
             const prof = await fetchProfile(session.user.id);
             if (!prof) { await sb.auth.signOut({ scope: 'local' }); return; }
             currentUser = prof;
-            if (prof.role === 'admin') { loadStudents(); loadActInbox(); }
+            if (prof.role === 'admin') { loadStudents(); loadActInbox(); loadArenaAdmin(); }
         }
 
         // ---------- MODAL ĐĂNG NHẬP ----------
@@ -2184,8 +2256,8 @@
                 currentUser = prof;
                 closeAuthModal();
                 updateAppRoleView();
-                if (prof.role === 'admin') { loadStudents(); loadActInbox(); }
-                loadLeaderboard(); loadActivities();   // tài liệu nội bộ chỉ hiện với quản trị viên
+                if (prof.role === 'admin') { loadStudents(); loadActInbox(); loadArenaAdmin(); }
+                loadLeaderboard(); loadActivities(); refreshArena();   // nội dung giới hạn & điểm đố vui theo tài khoản
                 if (!openPendingBook()) switchTab(prof.role === 'admin' ? 'tab-admin-dashboard' : 'tab-kham-pha');
                 showToast(prof.role === 'admin' ? `Xin chào ${prof.name}! Đã vào trang quản trị.` : prof.role === 'student' ? `Chào mừng ${shortName(prof)} quay lại thư viện!` : `Kính chào ${prof.name}!`);
             } catch (err) {
@@ -2203,7 +2275,7 @@
             try { localStorage.removeItem('phudong_temp'); } catch (e) {}
             hideFlipReader();
             updateAppRoleView();
-            loadLeaderboard(); loadActivities();
+            loadLeaderboard(); loadActivities(); refreshArena();
             switchTab('tab-kham-pha');
             showToast(`Đã đăng xuất${name ? ' tài khoản ' + name : ''}.`, 'info');
         }
@@ -2316,16 +2388,18 @@
             if (arena) arena.innerHTML = (currentUser?.role === 'student' ? stars : '—') + ' <span class="text-sm font-bold text-on-surface">Sao</span>';
         }
 
-        // Cộng sao trên máy chủ: 'quiz' = +20, 'finish_book' = +15
-        async function addStars(reason, label) {
+        // Cộng sao "đọc xong sách" trên máy chủ (+15, mỗi cuốn 1 lần). Sao đố vui do answer_quiz cộng.
+        async function addStars(reason, label, bookId) {
             if (currentUser?.role !== 'student' || !sb) return;
-            const { data, error } = await sb.rpc('award_stars', { p_reason: reason });
+            const { data, error } = await sb.rpc('award_stars', { p_reason: reason, p_book_id: bookId });
             if (error) { showToast('Chưa cộng được sao: ' + friendlyError(error), 'error'); return; }
             const added = (data ?? currentUser.stars) - currentUser.stars;
             currentUser.stars = data ?? currentUser.stars;
-            if (reason === 'finish_book') currentUser.booksRead++;
+            if (!added) { showToast('Em đã nhận sao cho cuốn này rồi. Đọc cuốn khác để nhận thêm nhé!', 'info'); return; }
+            currentUser.booksRead++;
             updateStarDisplays();
             loadLeaderboard();
+            renderRewards();
             showToast(`${label} +${added} Sao ⭐ (tổng ${currentUser.stars} Sao)`);
         }
 
@@ -2527,6 +2601,7 @@
                 requireLogin('Em hãy đăng nhập để đọc sách và vào Đấu Trường nhé.');
                 return;
             }
+            if (tabId === 'tab-dau-truong') { loadArenaBoard(); loadRewards(); }
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(el => el.classList.add('hidden'));
 
@@ -2548,13 +2623,19 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Khối lớp: 1–5, còn lại là "Sách hỗn hợp"
+        const GRADES = ['1', '2', '3', '4', '5'];
+        const gradeLabel = g => GRADES.includes(String(g)) ? 'Khối ' + g : 'Sách hỗn hợp';
+
         // RENDER STUDENT BOOKSHELF
         function renderBookshelf() {
             const grid = document.getElementById('bookshelf-grid');
             if (!grid) return;
 
             let filtered = booksData;
-            if (selectedFilterGrade !== 'all') {
+            if (selectedFilterGrade === 'hh') {
+                filtered = booksData.filter(b => !GRADES.includes(String(b.grade)));   // sách không thuộc khối 1–5
+            } else if (selectedFilterGrade !== 'all') {
                 filtered = booksData.filter(b => b.grade === selectedFilterGrade);
             }
 
@@ -2581,7 +2662,7 @@
                     <div class="relative aspect-[3/4] rounded-xl overflow-hidden bg-surface-container">
                         ${qrBadge(book)}
                         <img src="${esc(book.cover)}" alt="${esc(book.title)}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-                        <span class="absolute top-2 left-2 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">Khối ${esc(book.grade)}</span>
+                        <span class="absolute top-2 left-2 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">${esc(gradeLabel(book.grade))}</span>
                         ${book.hasAudio ? `<span class="absolute top-2 right-2 bg-amber-500 text-white p-1 rounded-full shadow" title="Có Audio"><span class="material-symbols-outlined text-xs">headphones</span></span>` : ''}
                         ${book.flipPages ? `<span class="absolute bottom-2 left-2 bg-white/95 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full shadow flex items-center gap-0.5"><span class="material-symbols-outlined text-xs">auto_stories</span>Sách lật</span>` : ''}
                     </div>
@@ -2601,7 +2682,7 @@
             selectedFilterGrade = gradeNum;
             const label = document.getElementById('active-grade-label');
             if (label) {
-                label.textContent = gradeNum === 'all' ? 'Tất Cả Khối Lớp' : 'Khối Lớp ' + gradeNum;
+                label.textContent = gradeNum === 'all' ? 'Tất Cả Khối Lớp' : gradeNum === 'hh' ? 'Sách Hỗn Hợp' : 'Khối Lớp ' + gradeNum;
             }
             renderBookshelf();
         }
@@ -2620,10 +2701,11 @@
             const book = booksData.find(b => b.id === bookId);
             if (!book) return;
             if (!currentUser) { pendingBookId = bookId; requireLogin('Em hãy đăng nhập để đọc sách nhé.'); return; }
+            readerBookId = book.id;
 
             document.getElementById('reader-active-title').textContent = book.title;
             document.getElementById('reader-active-author').textContent = 'Tác giả: ' + book.author;
-            document.getElementById('reader-active-chapter').textContent = 'Khối ' + book.grade + ' • ' + book.category;
+            document.getElementById('reader-active-chapter').textContent = gradeLabel(book.grade) + ' • ' + book.category;
             document.getElementById('reader-heading-title').textContent = book.title;
             document.getElementById('reader-heading-desc').textContent = book.desc || 'Tác phẩm đọc hấp dẫn chọn lọc';
             document.getElementById('reader-cover-img').src = book.cover;
@@ -2634,19 +2716,17 @@
             document.getElementById('bookmark-title').textContent = book.title;
             document.getElementById('bookmark-author').textContent = 'Tác giả: ' + book.author;
             document.getElementById('bookmark-cover').src = book.cover;
-            document.getElementById('bookmark-grade').textContent = 'Khối ' + book.grade;
+            document.getElementById('bookmark-grade').textContent = gradeLabel(book.grade);
 
             switchTab('tab-reader');
             if (book.flipPages) showFlipReader(book); else hideFlipReader();
         }
 
-        const finishedBooks = new Set();
+        let readerBookId = null;
         function finishBookReading() {
             if (currentUser?.role !== 'student') { showToast('Chỉ tài khoản học sinh mới được cộng sao.', 'info'); return; }
-            const title = document.getElementById('reader-active-title').textContent;
-            if (finishedBooks.has(title)) { showToast('Em đã nhận sao cho cuốn này rồi. Đọc cuốn khác để nhận thêm nhé!', 'info'); return; }
-            finishedBooks.add(title);
-            addStars('finish_book', 'Chúc mừng em đọc xong sách!');
+            if (!readerBookId) { showToast('Em hãy chọn một cuốn sách trong Tủ Sách để đọc nhé.', 'info'); return; }
+            addStars('finish_book', 'Chúc mừng em đọc xong sách!', readerBookId);
         }
 
         // ADMIN BOOK CRUD MANAGEMENT
@@ -2676,7 +2756,7 @@
                         <div class="text-[11px] text-on-surface-variant">${esc(book.author)}</div>
                     </td>
                     <td class="p-3">
-                        <span class="px-2 py-0.5 rounded-full bg-sky-100 text-primary font-bold">Khối ${esc(book.grade)}</span>
+                        <span class="px-2 py-0.5 rounded-full bg-sky-100 text-primary font-bold">${esc(gradeLabel(book.grade))}</span>
                     </td>
                     <td class="p-3 text-on-surface-variant font-medium">${esc(book.category || 'Mặc định')}</td>
                     <td class="p-3 text-on-surface-variant font-medium">${book.pages || 30} trang</td>
@@ -3288,7 +3368,7 @@ addEventListener('resize',fit);
             let y = 84 + q + 46;
             wrapText(x, book.title, W - pad * 2).slice(0, 2).forEach(l => { x.fillText(l, W / 2, y); y += 36; });
             x.fillStyle = '#3e4850'; x.font = '22px "Nunito Sans", sans-serif';
-            x.fillText(`${book.author} • Khối ${book.grade}`, W / 2, y + 4);
+            x.fillText(`${book.author} • ${gradeLabel(book.grade)}`, W / 2, y + 4);
             x.fillStyle = '#6e7881'; x.font = '18px "Nunito Sans", sans-serif';
             x.fillText('Quét mã để đọc sách • Mã: ' + book.id, W / 2, y + 36);
             return c;
@@ -3300,7 +3380,7 @@ addEventListener('resize',fit);
             if (!book) return;
             qrModalBookId = bookId;
             document.getElementById('qr-modal-title').textContent = book.title;
-            document.getElementById('qr-modal-meta').textContent = `${book.author} • Khối ${book.grade}`;
+            document.getElementById('qr-modal-meta').textContent = `${book.author} • ${gradeLabel(book.grade)}`;
             document.getElementById('qr-modal-code').innerHTML = qrSvg(bookLink(book.id), 2);
             document.getElementById('qr-modal-link').value = bookLink(book.id);
             document.getElementById('qrModal').classList.remove('hidden');
@@ -3333,7 +3413,7 @@ addEventListener('resize',fit);
                     <div class="qr-label-head">THƯ VIỆN PHÙ ĐỔNG</div>
                     <div class="qr-label-code">${qrSvg(bookLink(b.id), 1)}</div>
                     <div class="qr-label-title">${esc(b.title)}</div>
-                    <div class="qr-label-meta">${esc(b.author)} • Khối ${esc(b.grade)}</div>
+                    <div class="qr-label-meta">${esc(b.author)} • ${esc(gradeLabel(b.grade))}</div>
                 </div>`).join('');
             document.body.classList.add('printing-qr');
             const done = () => { document.body.classList.remove('printing-qr'); sheet.innerHTML = ''; window.removeEventListener('afterprint', done); };
@@ -4318,46 +4398,368 @@ addEventListener('resize',fit);
             showToast('Đã xóa.', 'info');
         }
 
-        // QUIZ MANAGEMENT & DISPLAY
-        function openAddQuizModal() {
-            document.getElementById('addQuizModal').classList.remove('hidden');
+        // ================= ĐẤU TRƯỜNG: ĐỐ VUI • BẢNG VÀNG • NHẬN QUÀ =================
+        let quizList = [], quizIdx = 0, quizResult = null, quizLoaded = false, quizErr = '', quizBusy = false;
+        let quizSession = { answered: 0, correct: 0, stars: 0 };
+        const LETTERS = ['A', 'B', 'C', 'D'];
+
+        async function loadQuiz() {
+            quizLoaded = false; renderQuiz();
+            if (!sb) { quizLoaded = true; quizErr = 'Trang chưa kết nối máy chủ.'; renderQuiz(); return; }
+            const { data, error } = await sb.rpc('get_quiz', { p_limit: 20 });
+            quizLoaded = true;
+            quizErr = error ? error.message : '';
+            quizList = data || []; quizIdx = 0; quizResult = null;
+            quizSession = { answered: 0, correct: 0, stars: 0 };
+            renderQuiz();
         }
-        function closeAddQuizModal() {
-            document.getElementById('addQuizModal').classList.add('hidden');
+
+        // Cùng một câu hỏi hiện ở tab Đấu Trường và ô đố vui ở trang Khám Phá
+        function renderQuiz() {
+            ['arena-quiz', 'home-quiz'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = quizHtml(id === 'home-quiz'); });
         }
-        function saveNewQuiz() {
-            const q = document.getElementById('new-quiz-q').value;
-            const ans = document.getElementById('new-quiz-ans').value;
-            if (q && ans) {
-                document.getElementById('quiz-question-text').textContent = q;
-                document.getElementById('opt-1').textContent = 'B. ' + ans;
-                quizRewarded = false;
-                showToast('Đã cập nhật câu hỏi đố vui mới.');
-                closeAddQuizModal();
+        function quizHtml(compact) {
+            const box = (inner) => `<div class="bg-surface-container-low p-4 sm:p-5 rounded-xl space-y-3">${inner}</div>`;
+            if (!quizLoaded) return box('<div class="py-6 text-center text-on-surface-variant font-bold text-sm">Đang tải câu hỏi…</div>');
+            if (quizErr) return box(`<div class="py-6 text-center text-rose-700 font-bold text-sm">Không tải được câu hỏi. ${esc(friendlyError(quizErr))} <button onclick="loadQuiz()" class="ml-2 px-3 py-1 rounded-full bg-primary text-white">Thử lại</button></div>`);
+            if (!quizList.length) return box('<div class="py-6 text-center text-on-surface-variant font-bold text-sm">Chưa có câu hỏi đố vui. Cô thủ thư sẽ cập nhật sớm nhé!</div>');
+            if (quizIdx >= quizList.length) {
+                const s = quizSession;
+                return box(`<div class="py-4 text-center space-y-3">
+                    <div class="text-4xl">🏆</div>
+                    <div class="font-heading font-bold text-lg text-on-surface">Hoàn thành lượt chơi!</div>
+                    <div class="text-sm text-on-surface-variant">Em trả lời đúng <b class="text-emerald-700">${s.correct}/${s.answered}</b> câu${s.stars ? `, nhận thêm <b class="text-amber-600">${s.stars} sao</b>` : ''}.</div>
+                    <button onclick="loadQuiz()" class="px-5 py-2.5 rounded-full bg-primary hover:bg-sky-800 text-white font-bold text-sm">Chơi lượt mới</button>
+                </div>`);
             }
+            const q = quizList[quizIdx], r = quizResult;
+            const opts = (q.options || []).map((o, i) => {
+                let cls = 'bg-white border-surface-container-high hover:bg-sky-50 hover:border-primary';
+                let mark = LETTERS[i];
+                if (r) {
+                    if (i === r.correct_index) { cls = 'bg-emerald-100 border-emerald-400'; mark = '✓'; }
+                    else if (i === r.chosen) { cls = 'bg-rose-100 border-rose-400'; mark = '✕'; }
+                    else cls = 'bg-white border-surface-container-high opacity-60';
+                }
+                return `<button type="button" ${r || quizBusy ? 'disabled' : ''} onclick="quizAnswer(${i})"
+                    class="w-full p-3 rounded-lg border ${cls} text-left text-sm text-on-surface transition-all flex items-center justify-between gap-2">
+                    <span><b class="mr-1">${LETTERS[i]}.</b> ${esc(o)}</span>
+                    <span class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center text-[11px] font-bold text-on-surface-variant shrink-0">${mark}</span>
+                </button>`;
+            }).join('');
+            const feedback = r ? `
+                <div class="p-3.5 rounded-xl ${r.correct ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-50 text-rose-900'} text-sm space-y-1">
+                    <div class="font-bold">${r.correct ? (r.stars_added ? `🎉 Chính xác! Em được cộng +${r.stars_added} sao ⭐` : '🎉 Chính xác!' + (currentUser?.role === 'student' ? ' (câu này em đã trả lời trước đó nên không cộng thêm sao)' : ''))
+                        : `Chưa đúng rồi. Đáp án đúng là <b>${LETTERS[r.correct_index]}</b>.`}</div>
+                    ${r.explanation ? `<div class="text-xs opacity-90">${esc(r.explanation)}</div>` : ''}
+                </div>
+                <div class="flex justify-end">
+                    <button onclick="quizNext()" class="px-4 py-2 rounded-full bg-primary hover:bg-sky-800 text-white font-bold text-xs">${quizIdx + 1 < quizList.length ? 'Câu tiếp theo →' : 'Xem kết quả →'}</button>
+                </div>` : '';
+            return box(`
+                <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] font-bold">
+                    <span class="text-on-surface-variant">Câu ${quizIdx + 1}/${quizList.length}${q.grade ? ' • Khối ' + esc(q.grade) : ''}</span>
+                    ${q.answered && !r ? '<span class="px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">Đã trả lời trước đây – không cộng sao</span>'
+                        : !r ? '<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">+20 ⭐ nếu đúng ngay lần đầu</span>' : ''}
+                </div>
+                <div class="flex items-start gap-2.5">
+                    <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0">?</span>
+                    <p class="font-heading font-bold ${compact ? 'text-sm' : 'text-base'} text-on-surface leading-snug">${esc(q.question)}</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">${opts}</div>
+                ${feedback}
+                ${compact && !r ? `<div class="text-right"><button onclick="switchTab('tab-dau-truong')" class="text-xs font-bold text-primary hover:underline">Vào Đấu Trường chơi tiếp →</button></div>` : ''}`);
         }
+        async function quizAnswer(choice) {
+            if (quizBusy || quizResult) return;
+            if (!currentUser) { requireLogin('Em đăng nhập để trả lời và nhận sao nhé!'); return; }
+            const q = quizList[quizIdx];
+            quizBusy = true; renderQuiz();
+            const { data, error } = await sb.rpc('answer_quiz', { p_question: q.id, p_choice: choice });
+            quizBusy = false;
+            if (error) { renderQuiz(); showToast(friendlyError(error), 'error'); return; }
+            quizResult = { ...data, chosen: choice };
+            q.answered = true;
+            quizSession.answered++;
+            if (data.correct) quizSession.correct++;
+            if (data.stars_added) {
+                quizSession.stars += data.stars_added;
+                currentUser.stars = data.total_stars;
+                updateStarDisplays();
+                loadLeaderboard();
+                renderRewards();
+            }
+            renderQuiz();
+            loadArenaBoard();
+        }
+        function quizNext() { quizIdx++; quizResult = null; renderQuiz(); }
 
-        let quizRewarded = false;
-        function checkAnswer(button, isCorrect) {
-            const feedback = document.getElementById('quiz-feedback');
-            const allButtons = document.querySelectorAll('.quiz-btn');
-            
-            allButtons.forEach(btn => btn.classList.remove('bg-emerald-100', 'border-emerald-400', 'bg-rose-100', 'border-rose-400'));
-
-            if (isCorrect) {
-                button.classList.add('bg-emerald-100', 'border-emerald-400');
-                if (feedback) feedback.classList.remove('hidden');
-                if (!currentUser) requireLogin('Đăng nhập để nhận sao khi trả lời đúng nhé!');
-                else if (currentUser.role === 'student' && !quizRewarded) { quizRewarded = true; addStars('quiz', 'Trả lời đúng!'); }
+        // ---------- Bảng vàng ----------
+        let arenaBoard = [], arenaMe = null;
+        async function loadArenaBoard() {
+            if (!sb) return;
+            const { data } = await sb.rpc('quiz_leaderboard', { p_limit: 10 });
+            arenaBoard = data || [];
+            arenaMe = null;
+            if (currentUser) { const r = await sb.rpc('my_quiz_stats'); arenaMe = r.data || null; }
+            renderArenaBoard();
+        }
+        function renderArenaBoard() {
+            const box = document.getElementById('arena-board');
+            if (!box) return;
+            const medal = ['🥇', '🥈', '🥉'];
+            box.innerHTML = !arenaBoard.length
+                ? '<div class="p-6 text-center text-on-surface-variant font-bold">Chưa có bạn nào tham gia. Hãy là người đầu tiên lên bảng vàng!</div>'
+                : arenaBoard.map((r, i) => `
+                    <div class="flex items-center justify-between gap-2 p-2.5 rounded-xl ${i === 0 ? 'bg-amber-50 border border-amber-200' : i < 3 ? 'bg-sky-50/70' : 'bg-surface-container-low'} ${currentUser?.id === r.id ? 'ring-2 ring-primary' : ''}">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <span class="w-7 text-center font-bold ${i < 3 ? 'text-lg' : 'text-on-surface-variant'}">${i < 3 ? medal[i] : i + 1}</span>
+                            <div class="min-w-0">
+                                <div class="font-bold text-on-surface truncate">${esc(r.name)}${currentUser?.id === r.id ? ' (em)' : ''}</div>
+                                <div class="text-[10px] text-on-surface-variant">Lớp ${esc(r.class_name || '')} • đã trả lời ${r.answered} câu</div>
+                            </div>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <div class="font-heading font-bold text-emerald-700">${r.points} câu đúng</div>
+                            <div class="text-[10px] font-bold text-amber-600">${r.stars} ⭐</div>
+                        </div>
+                    </div>`).join('');
+            const me = document.getElementById('arena-my-rank'), stats = document.getElementById('arena-my-stats');
+            if (currentUser?.role === 'student' && arenaMe) {
+                stats.textContent = `Đã trả lời ${arenaMe.answered}/${arenaMe.total_questions} câu • ${arenaMe.points} câu đúng`;
+                me.innerHTML = `<div class="p-3 rounded-xl bg-sky-100 border border-sky-200 text-xs font-bold text-primary text-center">${arenaMe.rank
+                    ? `Em đang xếp hạng #${arenaMe.rank} với ${arenaMe.points} câu đúng. ${arenaMe.rank <= 3 ? 'Giữ vững phong độ nhé!' : 'Cố lên để vào Top 3!'}`
+                    : 'Trả lời câu đầu tiên để có tên trên bảng vàng!'}</div>`;
             } else {
-                button.classList.add('bg-rose-100', 'border-rose-400');
+                stats.textContent = currentUser ? 'Bảng vàng dành cho học sinh' : 'Đăng nhập để tính điểm';
+                me.innerHTML = '';
             }
         }
 
-        function resetQuiz() {
-            const feedback = document.getElementById('quiz-feedback');
-            if (feedback) feedback.classList.add('hidden');
-            document.querySelectorAll('.quiz-btn').forEach(btn => btn.classList.remove('bg-emerald-100', 'border-emerald-400', 'bg-rose-100', 'border-rose-400'));
+        // ---------- Quà tặng ----------
+        let rewardsData = [], myGifts = [];
+        async function loadRewards() {
+            if (!sb) return;
+            const r = await sb.from('rewards').select('*').eq('active', true).order('cost');
+            rewardsData = (r.data || []).sort((a, b) => a.cost - b.cost);
+            myGifts = [];
+            if (currentUser?.role === 'student') {
+                const g = await sb.from('reward_redemptions').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+                myGifts = (g.data || []).sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
+            }
+            renderRewards();
+        }
+        function renderRewards() {
+            const box = document.getElementById('arena-rewards');
+            if (!box) return;
+            const isStudent = currentUser?.role === 'student', stars = currentUser?.stars || 0;
+            box.innerHTML = !rewardsData.length ? '<div class="col-span-full p-6 text-center text-on-surface-variant font-bold">Chưa có quà tặng. Cô thủ thư sẽ cập nhật sớm nhé!</div>'
+                : rewardsData.map(g => {
+                    const out = g.stock !== null && g.stock <= 0;
+                    let btn;
+                    if (out) btn = '<button disabled class="w-full py-2 rounded-full bg-slate-100 text-slate-400 font-bold text-xs">Đã hết quà</button>';
+                    else if (!currentUser) btn = `<button onclick="requireLogin('Đăng nhập để đổi quà nhé!')" class="w-full py-2 rounded-full bg-sky-100 hover:bg-sky-200 text-primary font-bold text-xs">Đăng nhập để đổi</button>`;
+                    else if (!isStudent) btn = '<button disabled class="w-full py-2 rounded-full bg-slate-100 text-slate-500 font-bold text-xs">Dành cho học sinh</button>';
+                    else if (stars < g.cost) btn = `<button disabled class="w-full py-2 rounded-full bg-slate-100 text-slate-500 font-bold text-xs">Cần thêm ${g.cost - stars} ⭐</button>`;
+                    else btn = `<button onclick="redeemReward('${g.id}')" class="w-full py-2 rounded-full bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs shadow-sm">Đổi quà</button>`;
+                    return `<div class="rounded-2xl border border-surface-container-high bg-gradient-to-b from-white to-amber-50/50 p-4 flex flex-col items-center text-center gap-2 ${out ? 'opacity-60' : ''}">
+                        <div class="text-4xl leading-none">${esc(g.icon || '🎁')}</div>
+                        <div class="font-heading font-bold text-sm text-on-surface leading-snug">${esc(g.name)}</div>
+                        ${g.description ? `<div class="text-[11px] text-on-surface-variant line-clamp-2">${esc(g.description)}</div>` : ''}
+                        <div class="mt-auto pt-1 font-heading font-extrabold text-amber-600">${g.cost} ⭐</div>
+                        ${g.stock !== null ? `<div class="text-[10px] font-bold ${out ? 'text-rose-600' : 'text-on-surface-variant'}">${out ? 'Hết hàng' : 'Còn ' + g.stock + ' phần'}</div>` : ''}
+                        ${btn}
+                    </div>`;
+                }).join('');
+            const mine = document.getElementById('arena-my-gifts');
+            const st = { pending: ['Chờ nhận tại thư viện', 'bg-amber-100 text-amber-900'], given: ['Đã nhận quà', 'bg-emerald-100 text-emerald-800'], cancelled: ['Đã huỷ – hoàn sao', 'bg-slate-200 text-slate-600'] };
+            mine.innerHTML = isStudent && myGifts.length ? `<div class="border-t border-surface-container pt-4">
+                    <div class="font-bold text-sm text-on-surface mb-2"><i class="fa-solid fa-box-open text-rose-500"></i> Quà em đã đổi</div>
+                    <div class="flex flex-wrap gap-2 text-xs">${myGifts.map(g => `<span class="px-3 py-1.5 rounded-full bg-surface-container-low border border-surface-container-high">
+                        <b>${esc(g.reward_name)}</b> • ${g.cost}⭐ • ${new Date(g.created_at).toLocaleDateString('vi-VN')}
+                        <span class="ml-1 px-2 py-0.5 rounded-full font-bold ${(st[g.status] || st.pending)[1]}">${(st[g.status] || st.pending)[0]}</span></span>`).join('')}</div>
+                </div>` : '';
+        }
+        async function redeemReward(id) {
+            const g = rewardsData.find(x => x.id === id);
+            if (!g || !needServer()) return;
+            if (!confirm(`Đổi ${g.cost} sao lấy "${g.name}"?`)) return;
+            const { data, error } = await sb.rpc('redeem_reward', { p_reward: id });
+            if (error) { showToast(friendlyError(error), 'error'); return; }
+            currentUser.stars = data.total_stars;
+            updateStarDisplays();
+            loadLeaderboard();
+            await loadRewards();
+            showToast(`Đã đổi "${g.name}"! Em đến bàn thủ thư để nhận quà nhé.`);
+            if (currentUser?.role === 'admin') loadArenaAdmin();
+        }
+        function scrollToRewards() {
+            document.getElementById('arena-rewards-wrap')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        function refreshArena() { loadQuiz(); loadArenaBoard(); loadRewards(); }
+
+        // ================= QUẢN TRỊ ĐẤU TRƯỜNG =================
+        let adminQuiz = [], adminRewards = [], adminRedeem = [], arenaAdminView = 'q';
+        async function loadArenaAdmin() {
+            if (!sb || currentUser?.role !== 'admin') return;
+            const [q, r, d] = await Promise.all([
+                sb.from('quiz_questions').select('*').order('created_at', { ascending: false }),
+                sb.from('rewards').select('*').order('cost'),
+                sb.rpc('admin_redemptions')
+            ]);
+            if (q.error) { showToast('Chưa tải được câu hỏi đố vui: ' + friendlyError(q.error) + (/quiz_questions/.test(q.error.message || '') ? ' — hãy chạy file dau_truong_setup.sql trên Supabase.' : ''), 'error'); }
+            adminQuiz = q.data || []; adminRewards = (r.data || []).sort((a, b) => a.cost - b.cost); adminRedeem = d.data || [];
+            const stat = document.getElementById('admin-stat-quiz-count');
+            if (stat) stat.textContent = adminQuiz.filter(x => x.active).length;
+            renderArenaAdmin();
+        }
+        function arenaAdminTab(v) { arenaAdminView = v; renderArenaAdmin(); }
+        function renderArenaAdmin() {
+            const body = document.getElementById('ar-body');
+            if (!body || currentUser?.role !== 'admin') return;
+            const counts = { q: adminQuiz.length, g: adminRewards.length, d: adminRedeem.filter(x => x.status === 'pending').length };
+            document.querySelectorAll('#ar-tabs .ar-tab').forEach(b => {
+                const on = b.dataset.ar === arenaAdminView;
+                b.className = 'ar-tab px-3.5 py-2 rounded-full whitespace-nowrap ' + (on ? 'bg-primary text-white shadow' : 'text-on-surface-variant hover:bg-surface-container');
+                b.querySelector('.aa-count').textContent = counts[b.dataset.ar] ? `(${counts[b.dataset.ar]}${b.dataset.ar === 'd' ? ' chờ' : ''})` : '';
+            });
+            const btn = (txt, fn, cls) => `<button onclick="${fn}" class="px-2.5 py-1 rounded-full font-bold ${cls}">${txt}</button>`;
+            const empty = msg => `<div class="p-8 text-center text-on-surface-variant font-bold">${msg}</div>`;
+            if (arenaAdminView === 'q') {
+                body.innerHTML = !adminQuiz.length ? empty('Chưa có câu hỏi. Bấm "Câu hỏi" ở trên để thêm.') : `<div class="space-y-2">${adminQuiz.map((q, n) => `
+                    <div class="p-3 rounded-2xl border border-surface-container-high ${q.active ? '' : 'opacity-60 bg-surface-container-low'} flex flex-col sm:flex-row sm:items-start gap-3">
+                        <div class="flex-1 min-w-0 space-y-1.5">
+                            <div class="font-bold text-on-surface text-sm">${n + 1}. ${esc(q.question)} ${q.grade ? `<span class="px-2 py-0.5 rounded-full bg-sky-100 text-primary text-[10px]">Khối ${esc(q.grade)}</span>` : ''} ${q.active ? '' : '<span class="px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 text-[10px]">Đang ẩn</span>'}</div>
+                            <div class="flex flex-wrap gap-1.5">${(q.options || []).map((o, i) => `<span class="px-2 py-0.5 rounded-full ${i === q.correct ? 'bg-emerald-100 text-emerald-800 font-bold' : 'bg-surface-container-low text-on-surface-variant'}">${LETTERS[i]}. ${esc(o)}${i === q.correct ? ' ✓' : ''}</span>`).join('')}</div>
+                        </div>
+                        <div class="flex gap-1 shrink-0">${btn('Sửa', `openQuizEditor('${q.id}')`, 'bg-sky-100 hover:bg-sky-200 text-primary')}${btn('Xóa', `deleteQuiz('${q.id}')`, 'bg-rose-100 hover:bg-rose-200 text-rose-700')}</div>
+                    </div>`).join('')}</div>`;
+            } else if (arenaAdminView === 'g') {
+                body.innerHTML = !adminRewards.length ? empty('Chưa có quà tặng. Bấm "Quà tặng" ở trên để thêm.') : `<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">${adminRewards.map(g => `
+                    <div class="rounded-2xl border border-surface-container-high p-3 flex flex-col items-center text-center gap-1 ${g.active ? '' : 'opacity-60'}">
+                        <div class="text-3xl">${esc(g.icon || '🎁')}</div>
+                        <div class="font-bold text-on-surface">${esc(g.name)}</div>
+                        <div class="font-bold text-amber-600">${g.cost} ⭐</div>
+                        <div class="text-[10px] text-on-surface-variant">${g.stock === null ? 'Không giới hạn' : 'Còn ' + g.stock}${g.active ? '' : ' • đang ẩn'}</div>
+                        <div class="flex gap-1 pt-1">${btn('Sửa', `openRewardEditor('${g.id}')`, 'bg-sky-100 hover:bg-sky-200 text-primary')}${btn('Xóa', `deleteReward('${g.id}')`, 'bg-rose-100 hover:bg-rose-200 text-rose-700')}</div>
+                    </div>`).join('')}</div>`;
+            } else {
+                const st = { pending: ['Chờ trao', 'bg-amber-100 text-amber-900'], given: ['Đã trao', 'bg-emerald-100 text-emerald-800'], cancelled: ['Đã huỷ', 'bg-slate-200 text-slate-600'] };
+                body.innerHTML = !adminRedeem.length ? empty('Chưa có học sinh đổi quà.') : `<div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+                    <thead><tr class="bg-surface-container-low text-on-surface-variant font-bold"><th class="p-3">Thời gian</th><th class="p-3">Học sinh</th><th class="p-3">Lớp</th><th class="p-3">Quà</th><th class="p-3">Trạng thái</th><th class="p-3 text-right">Thao tác</th></tr></thead>
+                    <tbody class="divide-y divide-surface-container">${adminRedeem.map(d => `<tr class="hover:bg-surface-container-low/60">
+                        <td class="p-3 whitespace-nowrap text-on-surface-variant">${formatTime(d.created_at)}</td>
+                        <td class="p-3 font-bold text-on-surface">${esc(d.student_name || '(đã xoá)')}</td>
+                        <td class="p-3">${esc(d.class_name || '')}</td>
+                        <td class="p-3">${esc(d.reward_name)} <span class="text-amber-600 font-bold">(${d.cost}⭐)</span></td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded-full font-bold ${st[d.status][1]}">${st[d.status][0]}</span></td>
+                        <td class="p-3 text-right whitespace-nowrap">${d.status === 'pending'
+                            ? btn('✓ Đã trao quà', `setRedemption('${d.id}','given')`, 'bg-emerald-100 hover:bg-emerald-200 text-emerald-800') + ' ' + btn('Huỷ & hoàn sao', `setRedemption('${d.id}','cancelled')`, 'bg-rose-100 hover:bg-rose-200 text-rose-700')
+                            : d.status === 'given' ? btn('Đánh dấu chưa trao', `setRedemption('${d.id}','pending')`, 'bg-surface-container hover:bg-surface-container-high') : ''}</td></tr>`).join('')}</tbody></table></div>`;
+            }
+        }
+        async function setRedemption(id, status) {
+            if (status === 'cancelled' && !confirm('Huỷ yêu cầu này và hoàn lại sao cho học sinh?')) return;
+            const { error } = await sb.rpc('admin_set_redemption', { p_id: id, p_status: status });
+            if (error) { showToast(friendlyError(error), 'error'); return; }
+            showToast(status === 'given' ? 'Đã ghi nhận trao quà.' : status === 'cancelled' ? 'Đã huỷ và hoàn sao cho học sinh.' : 'Đã chuyển về "Chờ trao".');
+            loadArenaAdmin(); loadRewards();
+        }
+
+        // ---------- Soạn câu hỏi ----------
+        function openQuizEditor(id) {
+            const q = id ? adminQuiz.find(x => x.id === id) : null;
+            document.getElementById('qe-title').textContent = q ? 'Sửa Câu Hỏi Đố Vui' : 'Thêm Câu Hỏi Đố Vui';
+            document.getElementById('qe-id').value = q ? q.id : '';
+            document.getElementById('qe-question').value = q ? q.question : '';
+            for (let i = 0; i < 4; i++) document.getElementById('qe-opt-' + i).value = q ? (q.options[i] || '') : '';
+            document.querySelectorAll('input[name="qe-correct"]').forEach(r => { r.checked = +r.value === (q ? q.correct : 0); });
+            document.getElementById('qe-explain').value = q ? (q.explanation || '') : '';
+            document.getElementById('qe-grade').value = q ? (q.grade || '') : '';
+            document.getElementById('qe-active').checked = q ? q.active : true;
+            document.getElementById('qe-error').classList.add('hidden');
+            document.getElementById('quizEditor').classList.remove('hidden');
+            setTimeout(() => document.getElementById('qe-question').focus(), 50);
+        }
+        async function saveQuiz(e) {
+            e.preventDefault();
+            if (!needServer()) return;
+            const fail = m => { const el = document.getElementById('qe-error'); el.textContent = m; el.classList.remove('hidden'); };
+            const id = document.getElementById('qe-id').value;
+            const question = document.getElementById('qe-question').value.trim();
+            const raw = [0, 1, 2, 3].map(i => document.getElementById('qe-opt-' + i).value.trim());
+            let correct = +(document.querySelector('input[name="qe-correct"]:checked')?.value ?? 0);
+            if (question.length < 3) return fail('Hãy nhập câu hỏi.');
+            if (!raw[correct]) return fail('Đáp án được đánh dấu đúng đang để trống.');
+            // bỏ phương án trống, giữ đúng vị trí đáp án
+            const options = [], map = {};
+            raw.forEach((o, i) => { if (o) { map[i] = options.length; options.push(o); } });
+            if (options.length < 2) return fail('Cần ít nhất 2 phương án trả lời.');
+            correct = map[correct];
+            const row = { question, options, correct, explanation: document.getElementById('qe-explain').value.trim() || null,
+                grade: document.getElementById('qe-grade').value || null, active: document.getElementById('qe-active').checked };
+            const { error } = id ? await sb.from('quiz_questions').update(row).eq('id', id) : await sb.from('quiz_questions').insert({ ...row, id: newId() });
+            if (error) return fail('Chưa lưu được: ' + friendlyError(error));
+            actClose('quizEditor');
+            showToast(id ? 'Đã cập nhật câu hỏi.' : 'Đã thêm câu hỏi vào Đấu Trường.');
+            arenaAdminView = 'q';
+            await loadArenaAdmin(); loadQuiz();
+        }
+        async function deleteQuiz(id) {
+            const q = adminQuiz.find(x => x.id === id);
+            if (!q || !confirm(`Xóa câu hỏi "${q.question.slice(0, 60)}…"? Điểm học sinh đã đạt ở câu này cũng bị trừ khỏi bảng vàng (sao đã nhận vẫn giữ).`)) return;
+            const { error } = await sb.from('quiz_questions').delete().eq('id', id);
+            if (error) { showToast(friendlyError(error), 'error'); return; }
+            showToast('Đã xóa câu hỏi.', 'info');
+            await loadArenaAdmin(); loadQuiz(); loadArenaBoard();
+        }
+
+        // ---------- Soạn quà tặng ----------
+        function openRewardEditor(id) {
+            const g = id ? adminRewards.find(x => x.id === id) : null;
+            document.getElementById('re-title').textContent = g ? 'Sửa Quà Tặng' : 'Thêm Quà Tặng';
+            document.getElementById('re-id').value = g ? g.id : '';
+            document.getElementById('re-icon').value = g ? g.icon : '🎁';
+            document.getElementById('re-name').value = g ? g.name : '';
+            document.getElementById('re-desc').value = g ? (g.description || '') : '';
+            document.getElementById('re-cost').value = g ? g.cost : 100;
+            document.getElementById('re-stock').value = g && g.stock !== null ? g.stock : '';
+            document.getElementById('re-active').checked = g ? g.active : true;
+            document.getElementById('re-error').classList.add('hidden');
+            document.getElementById('rewardEditor').classList.remove('hidden');
+            setTimeout(() => document.getElementById('re-name').focus(), 50);
+        }
+        function pickRewardIcon(ic) { document.getElementById('re-icon').value = ic; }
+        async function saveReward(e) {
+            e.preventDefault();
+            if (!needServer()) return;
+            const fail = m => { const el = document.getElementById('re-error'); el.textContent = m; el.classList.remove('hidden'); };
+            const id = document.getElementById('re-id').value;
+            const stockRaw = document.getElementById('re-stock').value.trim();
+            const row = {
+                icon: document.getElementById('re-icon').value.trim() || '🎁',
+                name: document.getElementById('re-name').value.trim(),
+                description: document.getElementById('re-desc').value.trim() || null,
+                cost: parseInt(document.getElementById('re-cost').value),
+                stock: stockRaw === '' ? null : Math.max(0, parseInt(stockRaw) || 0),
+                active: document.getElementById('re-active').checked
+            };
+            if (!row.name) return fail('Hãy nhập tên quà.');
+            if (!(row.cost > 0)) return fail('Số sao cần đổi phải lớn hơn 0.');
+            const { error } = id ? await sb.from('rewards').update(row).eq('id', id) : await sb.from('rewards').insert({ ...row, id: newId() });
+            if (error) return fail('Chưa lưu được: ' + friendlyError(error));
+            actClose('rewardEditor');
+            showToast(id ? 'Đã cập nhật quà.' : 'Đã thêm quà tặng.');
+            arenaAdminView = 'g';
+            await loadArenaAdmin(); loadRewards();
+        }
+        async function deleteReward(id) {
+            const g = adminRewards.find(x => x.id === id);
+            if (!g || !confirm(`Xóa quà "${g.name}"? Các lượt đổi quà cũ vẫn được giữ lại.`)) return;
+            const { error } = await sb.from('rewards').delete().eq('id', id);
+            if (error) { showToast(friendlyError(error), 'error'); return; }
+            showToast('Đã xóa quà.', 'info');
+            await loadArenaAdmin(); loadRewards();
         }
 
         function renderLeaderboard() {
@@ -4487,9 +4889,7 @@ addEventListener('resize',fit);
             }
         }
 
-        function openRedeemModal() {
-            const s = currentUser?.stars || 0;
-            showToast(`Em đang có ${s} Sao! Hãy đến bàn thủ thư để đổi Thước Kẻ Phù Đổng hoặc Hộp Bút Màu nhé!`, 'info');
+        function openRedeemModal() { switchTab('tab-dau-truong'); setTimeout(scrollToRewards, 300);
         }
     </script>
 </body>
