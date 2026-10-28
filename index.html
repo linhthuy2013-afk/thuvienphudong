@@ -197,7 +197,7 @@
                             <span class="absolute -bottom-0.5 -right-0.5 bg-emerald-500 w-3.5 h-3.5 rounded-full border-2 border-white"></span>
                         </div>
                         <div class="hidden md:flex flex-col text-left">
-                            <span id="user-display-name" class="font-heading font-bold text-sm text-on-surface leading-tight"></span>
+                            <span id="user-display-name" class="font-heading font-bold text-sm text-on-surface leading-tight max-w-[180px] truncate"></span>
                             <span id="user-display-role" class="text-xs text-on-surface-variant font-medium"></span>
                         </div>
                         <span class="material-symbols-outlined text-on-surface-variant text-lg">expand_more</span>
@@ -1014,7 +1014,7 @@
 
             <form id="login-form" onsubmit="handleLogin(event)" class="space-y-3" autocomplete="on" novalidate>
                 <div>
-                    <label for="login-username" class="block text-xs font-bold text-on-surface mb-1">Tên đăng nhập</label>
+                    <label for="login-username" id="login-username-label" class="block text-xs font-bold text-on-surface mb-1">Tên đăng nhập</label>
                     <div class="relative">
                         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg pointer-events-none">person</span>
                         <input id="login-username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Tên đăng nhập thư viện cấp cho em" class="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high text-sm outline-none focus:border-primary focus:bg-white"/>
@@ -1431,6 +1431,8 @@
         const SUPABASE_KEY = 'sb_publishable_j_fW6hd4gLniuzGdg0XOSg_4WAZa9Jp';   // Project Settings → API Keys → publishable / anon key
 
         const LOGIN_DOMAIN = '@thuvienphudong.local'; // tên đăng nhập "maianh" = maianh@thuvienphudong.local
+        // Tên đăng nhập có dạng email (vd. tài khoản quản trị) thì dùng thẳng email đó
+        const loginEmail = username => username.includes('@') ? username : username + LOGIN_DOMAIN;
         const FLIP_BUCKET = 'flipbooks';
         let sb = null;
 
@@ -1591,7 +1593,8 @@
             submit.classList.toggle('bg-primary', !isAdmin); submit.classList.toggle('hover:bg-sky-800', !isAdmin);
             const icon = document.getElementById('auth-icon');
             icon.classList.toggle('bg-amber-600', isAdmin); icon.classList.toggle('bg-primary', !isAdmin);
-            document.getElementById('login-username').placeholder = isAdmin ? 'Tên đăng nhập quản trị' : 'Tên đăng nhập thư viện cấp cho em';
+            document.getElementById('login-username-label').textContent = isAdmin ? 'Email quản trị viên' : 'Tên đăng nhập';
+            document.getElementById('login-username').placeholder = isAdmin ? 'Email quản trị viên' : 'Tên đăng nhập thư viện cấp cho em';
             hideLoginError();
         }
 
@@ -1639,11 +1642,12 @@
             const username = document.getElementById('login-username').value.trim().toLowerCase();
             const password = document.getElementById('login-password').value;
             if (!username || !password) { showLoginError('Vui lòng nhập đủ tên đăng nhập và mật khẩu.'); return; }
-            if (!/^[a-z0-9._]{3,20}$/.test(username)) { showLoginError('Tên đăng nhập chỉ gồm chữ không dấu, số, dấu chấm hoặc gạch dưới.'); return; }
+            const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username);
+            if (!isEmail && !/^[a-z0-9._]{3,20}$/.test(username)) { showLoginError('Tên đăng nhập chỉ gồm chữ không dấu, số, dấu chấm hoặc gạch dưới (quản trị viên nhập email).'); return; }
 
             setLoginBusy(true);
             try {
-                const { data, error } = await sb.auth.signInWithPassword({ email: username + LOGIN_DOMAIN, password });
+                const { data, error } = await sb.auth.signInWithPassword({ email: loginEmail(username), password });
                 if (error) { showLoginError(friendlyError(error)); document.getElementById('login-password').select(); return; }
 
                 const prof = await fetchProfile(data.user.id);
@@ -1731,7 +1735,7 @@
             const btn = e.submitter || e.target.querySelector('[type=submit]');
             btn.disabled = true;
             try {
-                const check = await sb.auth.signInWithPassword({ email: currentUser.username + LOGIN_DOMAIN, password: cur });
+                const check = await sb.auth.signInWithPassword({ email: loginEmail(currentUser.username), password: cur });
                 if (check.error) return fail(/invalid login/i.test(check.error.message) ? 'Mật khẩu hiện tại chưa đúng.' : friendlyError(check.error));
                 const { error } = await sb.auth.updateUser({ password: nw });
                 if (error) return fail(friendlyError(error));
