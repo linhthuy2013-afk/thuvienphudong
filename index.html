@@ -1114,7 +1114,7 @@
                         <span class="material-symbols-outlined text-amber-600">groups</span>
                     </div>
                     <div class="font-heading font-extrabold text-2xl text-amber-700" id="admin-stat-students">0 em</div>
-                    <div class="text-[11px] text-amber-800 font-bold">Được cấp quyền đăng nhập</div>
+                    <div class="text-[11px] text-amber-800 font-bold" id="admin-stat-students-sub">Được cấp quyền đăng nhập</div>
                 </div>
 
                 <div class="bg-white p-5 rounded-2xl border border-surface-container-high shadow-sm space-y-1">
@@ -1195,7 +1195,8 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h2 class="font-heading font-bold text-xl text-on-surface">Quản Lý Tài Khoản Độc Giả</h2>
-                        <p class="text-xs text-on-surface-variant">Tạo tên đăng nhập và mật khẩu cho học sinh, đặt lại mật khẩu khi các em quên</p>
+                        <p class="text-xs text-on-surface-variant">Tạo tài khoản cho học sinh, thầy cô và phụ huynh; đặt lại mật khẩu khi quên</p>
+                        <div id="member-filter" class="flex flex-wrap gap-1.5 text-xs mt-2"></div>
                     </div>
                     <div class="flex items-center gap-2">
                         <input id="admin-user-search" oninput="renderStudentTable()" type="text" placeholder="Tìm tên, lớp..." class="px-3.5 py-1.5 rounded-full bg-surface-container-low border border-surface-container-high text-xs outline-none focus:border-primary w-40 sm:w-56"/>
@@ -1209,8 +1210,9 @@
                         <thead>
                             <tr class="bg-surface-container-low text-on-surface-variant font-bold border-b border-surface-container-high">
                                 <th class="p-3">Họ và Tên</th>
+                                <th class="p-3">Nhóm</th>
                                 <th class="p-3">Tên Đăng Nhập</th>
-                                <th class="p-3">Lớp</th>
+                                <th class="p-3">Lớp / Tổ</th>
                                 <th class="p-3">Sao</th>
                                 <th class="p-3">Đăng Nhập Gần Nhất</th>
                                 <th class="p-3 text-right">Thao Tác</th>
@@ -1237,13 +1239,13 @@
                     <span class="material-symbols-outlined text-2xl">lock</span>
                 </div>
                 <h3 id="auth-title" class="font-heading font-bold text-xl text-on-surface">Đăng Nhập Thư Viện</h3>
-                <p id="auth-subtitle" class="text-xs text-on-surface-variant">Dùng tài khoản thư viện được nhà trường cấp</p>
+                <p id="auth-subtitle" class="text-xs text-on-surface-variant">Học sinh, thầy cô và phụ huynh dùng tài khoản thư viện cấp</p>
             </div>
 
             <!-- Chọn loại tài khoản -->
             <div class="flex rounded-full bg-surface-container p-1 text-xs font-bold">
                 <button type="button" onclick="setAuthTab('student')" id="auth-tab-student" class="flex-1 py-2 rounded-full bg-white text-primary shadow-sm">
-                    👨‍🎓 Độc Giả (Học Sinh)
+                    👨‍🎓 Độc Giả
                 </button>
                 <button type="button" onclick="setAuthTab('admin')" id="auth-tab-admin" class="flex-1 py-2 rounded-full text-on-surface-variant">
                     👩‍🏫 Quản Trị Viên
@@ -1327,11 +1329,19 @@
                 <div class="w-10 h-10 rounded-full bg-sky-100 text-primary flex items-center justify-center"><span class="material-symbols-outlined">person_add</span></div>
                 <div>
                     <h3 id="student-modal-title" class="font-heading font-bold text-lg text-on-surface">Thêm Tài Khoản Độc Giả</h3>
-                    <p class="text-xs text-on-surface-variant">Học sinh dùng tên đăng nhập và mật khẩu này để vào thư viện trên mọi máy</p>
+                    <p class="text-xs text-on-surface-variant">Học sinh, thầy cô, phụ huynh dùng tên đăng nhập và mật khẩu này để vào thư viện</p>
                 </div>
             </div>
             <form onsubmit="handleSaveStudent(event)" class="space-y-3 text-xs">
                 <input type="hidden" id="st-original-username"/>
+                <div>
+                    <label for="st-role" class="block font-bold mb-1">Nhóm tài khoản <span class="text-red-500">*</span></label>
+                    <select id="st-role" onchange="syncMemberRole()" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary font-bold">
+                        <option value="student">👨‍🎓 Học sinh</option>
+                        <option value="teacher">👩‍🏫 Thầy cô trong trường</option>
+                        <option value="parent">👪 Phụ huynh</option>
+                    </select>
+                </div>
                 <div>
                     <label for="st-name" class="block font-bold mb-1">Họ và tên <span class="text-red-500">*</span></label>
                     <input id="st-name" type="text" placeholder="Nguyễn Văn An" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/>
@@ -1342,7 +1352,7 @@
                         <input id="st-username" type="text" placeholder="vanan" autocomplete="off" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/>
                     </div>
                     <div>
-                        <label for="st-class" class="block font-bold mb-1">Lớp <span class="text-red-500">*</span></label>
+                        <label for="st-class" class="block font-bold mb-1"><span id="st-class-label">Lớp</span> <span id="st-class-req" class="text-red-500">*</span></label>
                         <input id="st-class" type="text" placeholder="4A1" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/>
                     </div>
                 </div>
@@ -1352,7 +1362,7 @@
                         <input id="st-password" type="text" autocomplete="off" placeholder="Ít nhất 6 ký tự" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/>
                         <p id="st-password-hint" class="text-[10px] text-on-surface-variant mt-1">Bắt buộc khi tạo mới</p>
                     </div>
-                    <div>
+                    <div id="st-stars-wrap">
                         <label for="st-stars" class="block font-bold mb-1">Số sao</label>
                         <input id="st-stars" type="number" min="0" value="0" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/>
                     </div>
@@ -1712,9 +1722,24 @@
                     </div>
                     <div id="ae-doc-list" class="space-y-1.5"></div>
                 </div>
-                <label data-ae="plan report" class="flex items-center gap-2 font-bold cursor-pointer">
-                    <input id="ae-private" type="checkbox" class="w-4 h-4 rounded"/> <i class="fa-solid fa-lock text-slate-500"></i> Tài liệu nội bộ (chỉ quản trị viên xem được, không hiện cho học sinh và phụ huynh)
-                </label>
+                <!-- Ai được xem -->
+                <div data-ae="event news media plan report" class="rounded-2xl border border-surface-container-high bg-surface-container-low/50 p-3 space-y-2">
+                    <div class="font-bold text-on-surface"><i class="fa-solid fa-eye text-primary"></i> Ai được xem nội dung này?</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <label class="ae-vis flex items-center gap-2 p-2.5 rounded-xl border-2 border-surface-container-high bg-white cursor-pointer font-bold">
+                            <input type="radio" name="ae-vis" value="public" onchange="actVisSync()" class="w-4 h-4"/> <i class="fa-solid fa-earth-asia text-emerald-600"></i> Công khai – mọi người
+                        </label>
+                        <label class="ae-vis flex items-center gap-2 p-2.5 rounded-xl border-2 border-surface-container-high bg-white cursor-pointer font-bold">
+                            <input type="radio" name="ae-vis" value="limited" onchange="actVisSync()" class="w-4 h-4"/> <i class="fa-solid fa-lock text-slate-600"></i> Giới hạn – chỉ nhóm được chọn
+                        </label>
+                    </div>
+                    <div id="ae-vis-roles" class="flex flex-wrap items-center gap-x-4 gap-y-2 pl-1">
+                        <label class="flex items-center gap-1.5 font-bold cursor-pointer"><input type="checkbox" value="teacher" class="ae-vis-role w-4 h-4 rounded"/> 👩‍🏫 Thầy cô</label>
+                        <label class="flex items-center gap-1.5 font-bold cursor-pointer"><input type="checkbox" value="student" class="ae-vis-role w-4 h-4 rounded"/> 👨‍🎓 Học sinh</label>
+                        <label class="flex items-center gap-1.5 font-bold cursor-pointer"><input type="checkbox" value="parent" class="ae-vis-role w-4 h-4 rounded"/> 👪 Phụ huynh</label>
+                        <span class="text-[11px] text-on-surface-variant w-full">Không chọn nhóm nào = chỉ quản trị viên xem. Người xem phải đăng nhập.</span>
+                    </div>
+                </div>
 
                 <label data-ae="event" class="flex items-center gap-2 font-bold cursor-pointer">
                     <input id="ae-register" type="checkbox" class="w-4 h-4 rounded"/> Cho học sinh bấm "Đăng ký tham gia"
@@ -1817,7 +1842,7 @@
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-surface-container-high/60 mt-8 pt-6 text-center">
-            © 2026 Trường Tiểu Học Phù Đổng. Hệ Thống Đọc Sách & Phân Quyền Quản Lý. <span class="opacity-70">• Phiên bản 28/10e – Kế hoạch & Báo cáo</span>
+            © 2026 Trường Tiểu Học Phù Đổng. Hệ Thống Đọc Sách & Phân Quyền Quản Lý. <span class="opacity-70">• Phiên bản 28/10f – phân nhóm độc giả & giới hạn người xem</span>
         </div>
     </footer>
 
@@ -2072,7 +2097,7 @@
 
             const isAdmin = role === 'admin';
             document.getElementById('auth-title').textContent = isAdmin ? 'Đăng Nhập Quản Trị Viên' : 'Đăng Nhập Độc Giả';
-            document.getElementById('auth-subtitle').textContent = isAdmin ? 'Dành cho thầy cô thủ thư quản lý sách và tài khoản' : 'Dùng tài khoản thư viện được nhà trường cấp';
+            document.getElementById('auth-subtitle').textContent = isAdmin ? 'Dành cho cô thủ thư quản lý sách và tài khoản' : 'Học sinh, thầy cô và phụ huynh dùng tài khoản thư viện cấp';
             document.getElementById('login-submit-label').textContent = isAdmin ? 'Đăng Nhập Quản Trị' : 'Đăng Nhập Độc Giả';
             const submit = document.getElementById('login-submit');
             submit.classList.toggle('bg-amber-600', isAdmin); submit.classList.toggle('hover:bg-amber-700', isAdmin);
@@ -2142,11 +2167,11 @@
                     showLoginError('Tài khoản này chưa được thư viện cấp quyền. Liên hệ cô thủ thư.');
                     return;
                 }
-                if (prof.role !== authTab) {
+                if ((authTab === 'admin') !== (prof.role === 'admin')) {
                     await sb.auth.signOut({ scope: 'local' });
                     showLoginError(prof.role === 'admin'
                         ? 'Đây là tài khoản quản trị. Hãy chọn tab "Quản Trị Viên" để đăng nhập.'
-                        : 'Đây là tài khoản học sinh. Hãy chọn tab "Độc Giả (Học Sinh)" để đăng nhập.');
+                        : 'Đây là tài khoản độc giả. Hãy chọn tab "Độc Giả" để đăng nhập.');
                     return;
                 }
 
@@ -2162,7 +2187,7 @@
                 if (prof.role === 'admin') { loadStudents(); loadActInbox(); }
                 loadLeaderboard(); loadActivities();   // tài liệu nội bộ chỉ hiện với quản trị viên
                 if (!openPendingBook()) switchTab(prof.role === 'admin' ? 'tab-admin-dashboard' : 'tab-kham-pha');
-                showToast(prof.role === 'admin' ? `Xin chào ${prof.name}! Đã vào trang quản trị.` : `Chào mừng ${shortName(prof)} quay lại thư viện!`);
+                showToast(prof.role === 'admin' ? `Xin chào ${prof.name}! Đã vào trang quản trị.` : prof.role === 'student' ? `Chào mừng ${shortName(prof)} quay lại thư viện!` : `Kính chào ${prof.name}!`);
             } catch (err) {
                 showLoginError(friendlyError(err));
             } finally {
@@ -2245,14 +2270,14 @@
 
             if (currentUser) {
                 document.getElementById('user-avatar').textContent = initials(currentUser.name);
-                document.getElementById('user-avatar').className = 'w-10 h-10 rounded-full text-white flex items-center justify-center font-heading font-bold text-sm ring-2 shadow-sm ' + (isAdmin ? 'bg-amber-600 ring-amber-300' : 'bg-primary ring-primary-container');
+                document.getElementById('user-avatar').className = 'w-10 h-10 rounded-full text-white flex items-center justify-center font-heading font-bold text-sm ring-2 shadow-sm ' + ({ admin: 'bg-amber-600 ring-amber-300', teacher: 'bg-indigo-600 ring-indigo-200', parent: 'bg-emerald-600 ring-emerald-200' }[currentUser.role] || 'bg-primary ring-primary-container');
                 document.getElementById('user-display-name').textContent = shortName(currentUser);
-                document.getElementById('user-display-role').textContent = isAdmin ? (currentUser.title || 'Quản Trị Viên') : 'Học Sinh • Lớp ' + currentUser.className;
+                document.getElementById('user-display-role').textContent = roleLine(currentUser);
                 document.getElementById('menu-name').textContent = currentUser.name;
                 document.getElementById('menu-username').textContent = 'Tên đăng nhập: ' + currentUser.username;
                 const chip = document.getElementById('menu-role-chip');
-                chip.textContent = isAdmin ? 'Quản trị viên' : 'Độc giả • Lớp ' + currentUser.className;
-                chip.className = 'inline-block mt-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold ' + (isAdmin ? 'bg-amber-100 text-amber-900' : 'bg-sky-100 text-primary');
+                chip.textContent = roleInfo(currentUser.role).label + (!isAdmin && currentUser.className ? ' • ' + currentUser.className : '');
+                chip.className = 'inline-block mt-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold ' + roleInfo(currentUser.role).chip;
                 document.getElementById('menu-admin-btn').classList.toggle('hidden', !isAdmin);
                 document.getElementById('menu-student-btn').classList.toggle('hidden', !isStudent);
             }
@@ -2269,11 +2294,14 @@
             badge.style.display = isStudent ? '' : 'none';
 
             // Lời chào trang Khám Phá
-            document.getElementById('greeting-name').textContent = isStudent ? `Chào bạn ${shortName(currentUser)}!` : 'Chào mừng em đến thư viện!';
-            document.getElementById('greeting-sub').textContent = isStudent
-                ? 'Hôm nay em muốn cùng Phù Đổng thám hiểm câu chuyện kỳ diệu nào?'
+            const role = currentUser?.role;
+            document.getElementById('greeting-name').textContent = role === 'student' ? `Chào bạn ${shortName(currentUser)}!`
+                : role === 'teacher' ? (/^(thầy|cô)\s/i.test(currentUser.name) ? `Chào ${currentUser.name}!` : `Chào thầy cô ${shortName(currentUser)}!`) : role === 'parent' ? 'Kính chào quý phụ huynh!' : 'Chào mừng em đến thư viện!';
+            document.getElementById('greeting-sub').textContent = role === 'student' ? 'Hôm nay em muốn cùng Phù Đổng thám hiểm câu chuyện kỳ diệu nào?'
+                : role === 'teacher' ? 'Thầy cô xem kế hoạch, báo cáo và hoạt động thư viện trong tab Hoạt Động Thư Viện.'
+                : role === 'parent' ? 'Cùng con đọc sách và theo dõi các hoạt động của thư viện nhà trường.'
                 : 'Đăng nhập ở góc trên bên phải để đọc sách, làm đố vui và tích sao nhé.';
-            document.getElementById('greeting-class').textContent = isStudent ? currentUser.className : 'Khách';
+            document.getElementById('greeting-class').textContent = role === 'student' ? currentUser.className : role === 'teacher' ? 'GV' : role === 'parent' ? 'PH' : role === 'admin' ? 'QT' : 'Khách';
 
             updateStarDisplays();
             renderLeaderboard();
@@ -2324,50 +2352,90 @@
             const d = new Date(iso);
             return d.toLocaleDateString('vi-VN') + ' ' + d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
         }
+        // ---------- NHÓM TÀI KHOẢN ----------
+        const ROLES = {
+            admin:   { label: 'Quản trị viên', short: 'Quản trị', chip: 'bg-amber-100 text-amber-900', icon: 'fa-user-shield' },
+            teacher: { label: 'Thầy cô',       short: 'Thầy cô',  chip: 'bg-indigo-100 text-indigo-800', icon: 'fa-chalkboard-user' },
+            student: { label: 'Học sinh',      short: 'Học sinh', chip: 'bg-sky-100 text-primary', icon: 'fa-child-reaching' },
+            parent:  { label: 'Phụ huynh',     short: 'Phụ huynh', chip: 'bg-emerald-100 text-emerald-800', icon: 'fa-people-roof' }
+        };
+        const MEMBER_ROLES = ['teacher', 'student', 'parent'];
+        const roleInfo = r => ROLES[r] || ROLES.student;
+        // Dòng mô tả dưới tên: "Học Sinh • Lớp 4A1", "Thầy Cô • Tổ Khối 3", "Phụ Huynh • Lớp 2A"
+        function roleLine(u) {
+            if (u.role === 'admin') return u.title || 'Quản Trị Viên';
+            if (u.role === 'teacher') return 'Thầy Cô' + (u.className ? ' • ' + u.className : '');
+            if (u.role === 'parent') return 'Phụ Huynh' + (u.className ? ' • Lớp ' + u.className : '');
+            return 'Học Sinh • Lớp ' + u.className;
+        }
+
+        // ---------- QUẢN LÝ TÀI KHOẢN ĐỘC GIẢ (ADMIN) ----------
+        let memberRoleFilter = 'all';
         async function loadStudents() {
             if (!sb || currentUser?.role !== 'admin') return;
-            const { data, error } = await sb.from('profiles').select('*').eq('role', 'student')
+            const { data, error } = await sb.from('profiles').select('*').neq('role', 'admin')
                 .order('class_name').order('name');
-            if (error) { showToast('Không tải được danh sách học sinh: ' + friendlyError(error), 'error'); return; }
+            if (error) { showToast('Không tải được danh sách độc giả: ' + friendlyError(error), 'error'); return; }
             studentsData = data.map(profileToUser);
             renderStudentTable();
         }
+        function setMemberFilter(r) { memberRoleFilter = r; renderStudentTable(); }
         function renderStudentTable() {
             const tbody = document.getElementById('admin-user-tbody');
             if (!tbody) return;
+            const by = r => studentsData.filter(u => u.role === r).length;
             const stat = document.getElementById('admin-stat-students');
-            if (stat) stat.textContent = studentsData.length + ' em';
+            if (stat) stat.textContent = studentsData.length + ' người';
+            const statSub = document.getElementById('admin-stat-students-sub');
+            if (statSub) statSub.textContent = `${by('student')} học sinh • ${by('teacher')} thầy cô • ${by('parent')} phụ huynh`;
+            const chips = document.getElementById('member-filter');
+            if (chips) chips.innerHTML = [['all', 'Tất cả', studentsData.length], ...MEMBER_ROLES.map(r => [r, roleInfo(r).label, by(r)])].map(([k, l, n]) =>
+                `<button type="button" onclick="setMemberFilter('${k}')" class="px-3 py-1.5 rounded-full font-bold ${memberRoleFilter === k ? 'bg-primary text-white' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container'}">${l} (${n})</button>`).join('');
             const q = (document.getElementById('admin-user-search')?.value || '').toLowerCase();
-            const students = studentsData.filter(u => !q || u.name.toLowerCase().includes(q)
-                || u.username.toLowerCase().includes(q) || String(u.className).toLowerCase().includes(q));
-            if (!students.length) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-on-surface-variant font-bold">${studentsData.length ? 'Không có học sinh khớp từ khoá tìm.' : 'Chưa có tài khoản độc giả. Bấm "Thêm Độc Giả" để tạo.'}</td></tr>`;
+            const list = studentsData.filter(u => (memberRoleFilter === 'all' || u.role === memberRoleFilter) && (!q || u.name.toLowerCase().includes(q)
+                || u.username.toLowerCase().includes(q) || String(u.className).toLowerCase().includes(q)));
+            if (!list.length) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-on-surface-variant font-bold">${studentsData.length ? 'Không có tài khoản khớp bộ lọc.' : 'Chưa có tài khoản độc giả. Bấm "Thêm Độc Giả" để tạo.'}</td></tr>`;
                 return;
             }
-            tbody.innerHTML = students.map(u => `
+            tbody.innerHTML = list.map(u => {
+                const ri = roleInfo(u.role);
+                return `
                 <tr class="hover:bg-surface-container-low/60 transition-colors">
                     <td class="p-3">
                         <div class="flex items-center gap-2.5">
-                            <div class="w-8 h-8 rounded-full bg-sky-100 text-primary flex items-center justify-center font-bold text-[11px] shrink-0">${esc(initials(u.name))}</div>
+                            <div class="w-8 h-8 rounded-full ${ri.chip} flex items-center justify-center font-bold text-[11px] shrink-0">${esc(initials(u.name))}</div>
                             <span class="font-bold text-on-surface">${esc(u.name)}</span>
                         </div>
                     </td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded-full font-bold whitespace-nowrap ${ri.chip}"><i class="fa-solid ${ri.icon}"></i> ${ri.short}</span></td>
                     <td class="p-3 font-mono text-on-surface">${esc(u.username)}</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded-full bg-sky-100 text-primary font-bold">${esc(u.className)}</span></td>
-                    <td class="p-3 font-bold text-amber-700">${u.stars || 0} ⭐</td>
+                    <td class="p-3">${u.className ? `<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-bold">${esc(u.className)}</span>` : '<span class="text-on-surface-variant">—</span>'}</td>
+                    <td class="p-3 font-bold text-amber-700">${u.role === 'student' ? (u.stars || 0) + ' ⭐' : '<span class="text-on-surface-variant font-normal">—</span>'}</td>
                     <td class="p-3 text-on-surface-variant">${formatTime(u.lastLogin)}</td>
                     <td class="p-3 text-right whitespace-nowrap space-x-1">
                         <button onclick="openStudentModal('${u.id}')" class="px-2.5 py-1 rounded-full bg-sky-100 hover:bg-sky-200 text-primary font-bold">Sửa</button>
                         <button onclick="resetStudentPassword('${u.id}')" class="px-2.5 py-1 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold">Đặt lại MK</button>
                         <button onclick="deleteStudent('${u.id}')" class="px-2.5 py-1 rounded-full bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold">Xóa</button>
                     </td>
-                </tr>`).join('');
+                </tr>`;
+            }).join('');
         }
 
+        // Nhãn ô "Lớp" đổi theo nhóm tài khoản
+        function syncMemberRole() {
+            const r = document.getElementById('st-role').value;
+            document.getElementById('st-class-label').textContent = r === 'teacher' ? 'Tổ / Lớp chủ nhiệm' : r === 'parent' ? 'Lớp của con' : 'Lớp';
+            document.getElementById('st-class-req').classList.toggle('hidden', r !== 'student');
+            document.getElementById('st-class').placeholder = r === 'teacher' ? 'Tổ Khối 3 / 3A1' : '4A1';
+            document.getElementById('st-stars-wrap').classList.toggle('invisible', r !== 'student');
+            document.getElementById('st-name').placeholder = r === 'teacher' ? 'Cô Nguyễn Thị Lan' : r === 'parent' ? 'Phụ huynh em Nguyễn Văn An' : 'Nguyễn Văn An';
+        }
         function openStudentModal(id) {
             const u = id ? studentsData.find(x => x.id === id) : null;
             document.getElementById('student-modal-title').textContent = u ? 'Sửa Tài Khoản Độc Giả' : 'Thêm Tài Khoản Độc Giả';
             document.getElementById('st-original-username').value = u ? u.id : '';
+            document.getElementById('st-role').value = u ? u.role : (memberRoleFilter !== 'all' ? memberRoleFilter : 'student');
             document.getElementById('st-name').value = u ? u.name : '';
             const un = document.getElementById('st-username');
             un.value = u ? u.username : '';
@@ -2379,6 +2447,7 @@
             document.getElementById('st-stars').value = u ? (u.stars || 0) : 0;
             document.getElementById('st-password-hint').textContent = u ? 'Để trống nếu không đổi mật khẩu' : 'Bắt buộc khi tạo mới';
             document.getElementById('st-error').classList.add('hidden');
+            syncMemberRole();
             document.getElementById('studentModal').classList.remove('hidden');
             setTimeout(() => document.getElementById('st-name').focus(), 50);
         }
@@ -2392,13 +2461,15 @@
             const fail = msg => { err.textContent = msg; err.classList.remove('hidden'); };
             err.classList.add('hidden');
             const id = document.getElementById('st-original-username').value;
+            const role = document.getElementById('st-role').value;
             const name = document.getElementById('st-name').value.trim();
             const username = document.getElementById('st-username').value.trim().toLowerCase();
             const className = document.getElementById('st-class').value.trim().toUpperCase();
             const password = document.getElementById('st-password').value;
             const stars = Math.max(0, parseInt(document.getElementById('st-stars').value) || 0);
 
-            if (!name || !username || !className) return fail('Vui lòng điền họ tên, tên đăng nhập và lớp.');
+            if (!name || !username) return fail('Vui lòng điền họ tên và tên đăng nhập.');
+            if (role === 'student' && !className) return fail('Học sinh cần có lớp.');
             if (!/^[a-z0-9._]{3,20}$/.test(username)) return fail('Tên đăng nhập dài 3–20 ký tự, chỉ gồm chữ không dấu, số, dấu chấm hoặc gạch dưới.');
             if (!id && password.length < 6) return fail('Mật khẩu cần ít nhất 6 ký tự.');
             if (id && password && password.length < 6) return fail('Mật khẩu mới cần ít nhất 6 ký tự.');
@@ -2407,17 +2478,17 @@
             btn.disabled = true;
             try {
                 if (id) {
-                    let r = await sb.rpc('admin_update_student', { p_id: id, p_name: name, p_class: className, p_stars: stars });
-                    if (r.error) return fail(friendlyError(r.error));
+                    let r = await sb.rpc('admin_update_member', { p_id: id, p_name: name, p_role: role, p_class: className, p_stars: stars });
+                    if (r.error) return fail(friendlyError(r.error) + (/admin_update_member/i.test(r.error.message) ? ' — hãy chạy file phan_quyen_doi_tuong.sql trên Supabase.' : ''));
                     if (password) {
                         r = await sb.rpc('admin_set_password', { p_id: id, p_password: password });
                         if (r.error) return fail(friendlyError(r.error));
                     }
                     showToast(`Đã cập nhật tài khoản ${name}.`);
                 } else {
-                    const r = await sb.rpc('admin_create_student', { p_username: username, p_password: password, p_name: name, p_class: className, p_stars: stars });
-                    if (r.error) return fail(friendlyError(r.error));
-                    showToast(`Đã tạo tài khoản "${username}" cho ${name}.`);
+                    const r = await sb.rpc('admin_create_member', { p_username: username, p_password: password, p_name: name, p_role: role, p_class: className, p_stars: stars });
+                    if (r.error) return fail(friendlyError(r.error) + (/admin_create_member/i.test(r.error.message) ? ' — hãy chạy file phan_quyen_doi_tuong.sql trên Supabase.' : ''));
+                    showToast(`Đã tạo tài khoản ${roleInfo(role).label.toLowerCase()} "${username}" cho ${name}.`);
                 }
                 closeStudentModal();
                 await loadStudents();
@@ -2432,12 +2503,12 @@
             if (!confirm(`Đặt lại mật khẩu của ${u.name} về 123456?`)) return;
             const { error } = await sb.rpc('admin_set_password', { p_id: id, p_password: '123456' });
             if (error) { showToast(friendlyError(error), 'error'); return; }
-            showToast(`Mật khẩu của ${u.name} đã về 123456. Nhắc em đổi lại sau khi đăng nhập.`);
+            showToast(`Mật khẩu của ${u.name} đã về 123456. Nhắc đổi lại sau khi đăng nhập.`);
         }
         async function deleteStudent(id) {
             const u = studentsData.find(x => x.id === id);
             if (!u || !needServer()) return;
-            if (!confirm(`Xóa tài khoản ${u.name} (${u.username})? Số sao của em cũng bị xóa.`)) return;
+            if (!confirm(`Xóa tài khoản ${u.name} (${u.username})?${u.role === 'student' ? ' Số sao của em cũng bị xóa.' : ''}`)) return;
             const { error } = await sb.rpc('admin_delete_student', { p_id: id });
             if (error) { showToast(friendlyError(error), 'error'); return; }
             showToast(`Đã xóa tài khoản ${u.name}.`, 'info');
@@ -3399,7 +3470,7 @@ addEventListener('resize',fit);
                     ${cover ? `<button onclick="actOpenDetail('${a.id}')" class="block h-40 w-full overflow-hidden"><img src="${esc(cover)}" alt="" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></button>` : ''}
                     <div class="p-6 pb-0">
                         <div class="flex justify-between items-start mb-4 gap-2">
-                            <span class="px-3 py-1 rounded-full text-xs font-extrabold ${c.chip} flex items-center gap-1"><i class="fa-solid ${c.icon}"></i> ${c.label}</span>
+                            <div class="flex flex-col items-start gap-1.5"><span class="px-3 py-1 rounded-full text-xs font-extrabold ${c.chip} flex items-center gap-1"><i class="fa-solid ${c.icon}"></i> ${c.label}</span>${visBadge(a)}</div>
                             ${a.event_date ? `<div class="text-center bg-white border border-slate-200 px-3 py-1.5 rounded-2xl shadow-sm shrink-0">
                                 <span class="block text-xs text-slate-400 font-bold uppercase">Tháng ${+m}</span>
                                 <span class="block text-xl font-black ${c.date} leading-none">${+d}</span>
@@ -3446,6 +3517,7 @@ addEventListener('resize',fit);
                 return `
                     <div onclick="actOpenMedia('${a.id}')" class="group relative rounded-3xl overflow-hidden aspect-square bg-slate-200 cursor-pointer shadow-sm hover:shadow-xl transition-all">
                         ${inner}
+                        ${visBadge(a, 'absolute top-2 left-2 z-10')}
                         ${isVideo ? `<span class="absolute inset-0 flex items-center justify-center pointer-events-none"><span class="w-14 h-14 rounded-full bg-black/55 text-white flex items-center justify-center text-xl"><i class="fa-solid fa-play ml-1"></i></span></span>` : ''}
                         <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent p-3 sm:p-4 text-white text-left">
                             ${a.label ? `<span class="text-[11px] font-semibold text-amber-300">${esc(a.label)}</span>` : ''}
@@ -3499,7 +3571,7 @@ addEventListener('resize',fit);
                     <div class="${cover ? 'md:w-1/2' : 'w-full'} p-6 flex flex-col justify-between">
                         <div>
                             <div class="text-xs font-bold text-slate-400 mb-2 flex items-center gap-2 flex-wrap">
-                                <span class="px-2 py-0.5 rounded-full ${c.chip} text-[10px] font-extrabold">${c.label}</span>
+                                <span class="px-2 py-0.5 rounded-full ${c.chip} text-[10px] font-extrabold">${c.label}</span>${visBadge(main)}
                                 ${main.event_date ? `<span><i class="fa-regular fa-calendar"></i> ${fmtDate(main.event_date)}</span>` : ''}
                             </div>
                             <h4 class="text-xl font-bold text-slate-800 mb-3 hover:text-sky-600 transition-colors cursor-pointer" onclick="actOpenDetail('${main.id}')">${esc(main.title)}</h4>
@@ -3520,7 +3592,7 @@ addEventListener('resize',fit);
                         return `<div onclick="actOpenDetail('${n.id}')" class="p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:bg-sky-50/50 transition-colors cursor-pointer flex gap-4">
                             ${img ? `<div class="w-20 h-20 rounded-xl bg-slate-200 overflow-hidden flex-shrink-0"><img src="${esc(img)}" alt="" loading="lazy" class="w-full h-full object-cover"></div>` : ''}
                             <div class="min-w-0">
-                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full ${nc.chip}">${nc.label}</span>
+                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full ${nc.chip}">${nc.label}</span> ${visBadge(n)}
                                 <h5 class="text-sm font-bold text-slate-800 mt-1 line-clamp-2 hover:text-sky-600">${esc(n.title)}</h5>
                                 ${n.event_date ? `<span class="text-[11px] text-slate-400 mt-1 block">${fmtDate(n.event_date)}</span>` : ''}
                             </div>
@@ -3547,7 +3619,7 @@ addEventListener('resize',fit);
                 ${cover ? `<img src="${esc(cover)}" alt="" class="w-full max-h-80 object-cover">` : ''}
                 <div class="p-6 sm:p-8 space-y-4">
                     <div class="flex flex-wrap items-center gap-2 text-xs font-bold text-slate-400">
-                        <span class="px-3 py-1 rounded-full ${c.chip} font-extrabold"><i class="fa-solid ${c.icon}"></i> ${c.label}</span>
+                        <span class="px-3 py-1 rounded-full ${c.chip} font-extrabold"><i class="fa-solid ${c.icon}"></i> ${c.label}</span>${visBadge(a)}
                         ${a.kind === 'news' && a.event_date ? `<span><i class="fa-regular fa-calendar"></i> ${fmtDate(a.event_date)}</span>` : ''}
                         ${a.kind === 'news' && a.author ? `<span>• ${esc(a.author)}</span>` : ''}
                     </div>
@@ -3566,9 +3638,9 @@ addEventListener('resize',fit);
             document.getElementById('act-modal-title').textContent = a.title;
             document.getElementById('act-register-form').reset();
             document.getElementById('act-rg-activity').value = id;
-            if (currentUser?.role === 'student') {
+            if (currentUser && currentUser.role !== 'admin') {
                 document.getElementById('act-rg-name').value = currentUser.name;
-                document.getElementById('act-rg-class').value = currentUser.className;
+                document.getElementById('act-rg-class').value = currentUser.className || '';
             }
             document.getElementById('act-register-modal').classList.remove('hidden');
         }
@@ -3615,10 +3687,40 @@ addEventListener('resize',fit);
             if (currentUser?.role === 'admin') loadActInbox();
         }
         function actPrefillSuggest() {
-            if (currentUser?.role !== 'student') return;
+            if (!currentUser || currentUser.role === 'admin') return;
             const n = document.getElementById('act-sg-name'), c = document.getElementById('act-sg-class');
             if (n && !n.value) n.value = currentUser.name;
             if (c && !c.value) c.value = currentUser.className;
+        }
+
+        // ---------- AI ĐƯỢC XEM ----------
+        const VIS_LABEL = { teacher: 'Thầy cô', student: 'Học sinh', parent: 'Phụ huynh' };
+        const visOf = a => Array.isArray(a.visible_to) ? a.visible_to : (a.is_private ? [] : ['public']);
+        const isPublic = a => visOf(a).includes('public');
+        function visText(a) {
+            const v = visOf(a);
+            if (v.includes('public')) return 'Công khai';
+            const names = v.filter(r => VIS_LABEL[r]).map(r => VIS_LABEL[r]);
+            return names.length ? 'Chỉ ' + names.join(', ').toLowerCase() : 'Chỉ quản trị viên';
+        }
+        // Huy hiệu nhỏ cho nội dung bị giới hạn (công khai thì không hiện gì)
+        function visBadge(a, extra = '') {
+            return isPublic(a) ? '' : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-800 text-white text-[10px] font-bold ${extra}" title="Nội dung giới hạn"><i class="fa-solid fa-lock"></i> ${esc(visText(a))}</span>`;
+        }
+        function setVis(v) {
+            const pub = v.includes('public');
+            document.querySelectorAll('input[name="ae-vis"]').forEach(i => { i.checked = i.value === (pub ? 'public' : 'limited'); });
+            document.querySelectorAll('.ae-vis-role').forEach(c => { c.checked = !pub && v.includes(c.value); });
+            actVisSync();
+        }
+        function getVis() {
+            const pub = document.querySelector('input[name="ae-vis"]:checked')?.value !== 'limited';
+            return pub ? ['public'] : [...document.querySelectorAll('.ae-vis-role:checked')].map(c => c.value);
+        }
+        function actVisSync() {
+            const limited = document.querySelector('input[name="ae-vis"]:checked')?.value === 'limited';
+            document.getElementById('ae-vis-roles').classList.toggle('hidden', !limited);
+            document.querySelectorAll('.ae-vis').forEach(l => { const on = l.querySelector('input').checked; l.classList.toggle('border-primary', on); });
         }
 
         // ================= KẾ HOẠCH & BÁO CÁO (file PDF hoặc ảnh) =================
@@ -3681,7 +3783,7 @@ addEventListener('resize',fit);
                                 <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-bold text-slate-400">
                                     ${a.time_text ? `<span class="px-2 py-0.5 rounded-full ${isPlan ? 'bg-sky-100 text-sky-800' : 'bg-emerald-100 text-emerald-800'}">${esc(a.time_text)}</span>` : ''}
                                     ${a.event_date ? `<span><i class="fa-regular fa-calendar"></i> ${fmtDate(a.event_date)}</span>` : ''}
-                                    ${a.is_private ? '<span class="px-2 py-0.5 rounded-full bg-slate-800 text-white"><i class="fa-solid fa-lock"></i> Nội bộ</span>' : ''}
+                                    ${visBadge(a)}
                                 </div>
                                 <h4 class="text-base font-bold text-slate-800 mt-1 leading-snug">${esc(a.title)}</h4>
                                 ${a.author ? `<div class="text-[11px] text-slate-500 mt-0.5">Người lập: ${esc(a.author)}</div>` : ''}
@@ -3798,7 +3900,7 @@ addEventListener('resize',fit);
                     event_date: g('ae-date') || todayStr(),
                     author: g('ae-author') || null,
                     body: g('ae-body') || null,
-                    is_private: document.getElementById('ae-private').checked,
+                    visible_to: getVis(), is_private: !getVis().length,
                     attachments,
                     updated_at: new Date().toISOString()
                 };
@@ -3867,7 +3969,7 @@ addEventListener('resize',fit);
                     <thead><tr class="bg-surface-container-low text-on-surface-variant font-bold"><th class="p-3">Ngày</th><th class="p-3">Sự kiện</th><th class="p-3">Nhóm</th><th class="p-3">Đăng ký</th><th class="p-3 text-right">Thao tác</th></tr></thead>
                     <tbody class="divide-y divide-surface-container">${list.map(a => `<tr class="hover:bg-surface-container-low/60">
                         <td class="p-3 font-bold whitespace-nowrap ${a.event_date && a.event_date < todayStr() ? 'text-on-surface-variant' : 'text-primary'}">${fmtDate(a.event_date) || '—'}</td>
-                        <td class="p-3"><div class="font-bold text-on-surface">${esc(a.title)}</div><div class="text-[11px] text-on-surface-variant">${esc([a.time_text, a.location].filter(Boolean).join(' • '))}</div></td>
+                        <td class="p-3"><div class="font-bold text-on-surface">${esc(a.title)} ${visBadge(a)}</div><div class="text-[11px] text-on-surface-variant">${esc([a.time_text, a.location].filter(Boolean).join(' • '))}</div></td>
                         <td class="p-3"><span class="px-2 py-0.5 rounded-full font-bold ${catOf(a.category).chip}">${catOf(a.category).label}</span></td>
                         <td class="p-3 whitespace-nowrap">${a.allow_register ? `<button onclick="actRegFor('${a.id}')" class="font-bold text-emerald-700 hover:underline">${actCounts[a.id] || 0} bạn →</button>` : '<span class="text-on-surface-variant">Không mở</span>'}</td>
                         <td class="p-3 text-right whitespace-nowrap">${actions(a)}</td></tr>`).join('')}</tbody></table></div>`;
@@ -3877,7 +3979,7 @@ addEventListener('resize',fit);
                     <thead><tr class="bg-surface-container-low text-on-surface-variant font-bold"><th class="p-3">Ảnh</th><th class="p-3">Bài viết</th><th class="p-3">Ngày đăng</th><th class="p-3 text-right">Thao tác</th></tr></thead>
                     <tbody class="divide-y divide-surface-container">${list.map(a => `<tr class="hover:bg-surface-container-low/60">
                         <td class="p-3">${safeUrl(a.cover_url) ? `<img src="${esc(safeUrl(a.cover_url))}" alt="" class="w-14 h-10 object-cover rounded-md">` : '<div class="w-14 h-10 rounded-md bg-surface-container"></div>'}</td>
-                        <td class="p-3"><div class="font-bold text-on-surface">${esc(a.title)}</div><div class="text-[11px] text-on-surface-variant">${esc(a.author || '')} • ${catOf(a.category).label}</div></td>
+                        <td class="p-3"><div class="font-bold text-on-surface">${esc(a.title)} ${visBadge(a)}</div><div class="text-[11px] text-on-surface-variant">${esc(a.author || '')} • ${catOf(a.category).label}</div></td>
                         <td class="p-3 whitespace-nowrap">${fmtDate(a.event_date) || '—'}</td>
                         <td class="p-3 text-right whitespace-nowrap">${actions(a)}</td></tr>`).join('')}</tbody></table></div>`;
             } else if (actAdminView === 'media') {
@@ -3891,7 +3993,7 @@ addEventListener('resize',fit);
                             <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-full bg-black/60 text-white text-[10px] font-bold">${typeLabel[a.media_type] || 'Ảnh'}</span>
                         </div>
                         <div class="p-2.5 flex-1 flex flex-col justify-between gap-2">
-                            <div class="font-bold text-on-surface line-clamp-2">${esc(a.title)}</div>
+                            <div class="font-bold text-on-surface line-clamp-2">${esc(a.title)}</div>${visBadge(a)}
                             <div class="flex gap-1">${actions(a)}</div>
                         </div></div>`;
                 }).join('')}</div>`;
@@ -3906,7 +4008,7 @@ addEventListener('resize',fit);
                         <td class="p-3 whitespace-nowrap font-bold text-primary">${fmtDate(a.event_date) || '—'}</td>
                         <td class="p-3"><div class="font-bold text-on-surface">${esc(a.title)}</div><div class="text-[11px] text-on-surface-variant">${esc([a.time_text, a.author].filter(Boolean).join(' • '))}</div></td>
                         <td class="p-3 whitespace-nowrap">${pdf ? `<span class="text-rose-700 font-bold"><i class="fa-solid fa-file-pdf"></i> ${pdf} PDF</span> ` : ''}${img ? `<span class="text-sky-700 font-bold"><i class="fa-solid fa-image"></i> ${img} ảnh</span>` : ''}</td>
-                        <td class="p-3 whitespace-nowrap">${a.is_private ? '<span class="px-2 py-0.5 rounded-full bg-slate-800 text-white font-bold"><i class="fa-solid fa-lock"></i> Nội bộ</span>' : '<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Công khai</span>'}</td>
+                        <td class="p-3 whitespace-nowrap">${isPublic(a) ? '<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Công khai</span>' : visBadge(a)}</td>
                         <td class="p-3 text-right whitespace-nowrap">${actions(a)}</td></tr>`;
                     }).join('')}</tbody></table></div>`;
             } else if (actAdminView === 'reg') {
@@ -4042,7 +4144,7 @@ addEventListener('resize',fit);
             val('ae-author', a ? a.author : currentUser?.name); val('ae-body', a?.body); val('ae-label', a?.label);
             document.getElementById('ae-register').checked = a ? !!a.allow_register : true;
             val('ae-period', isDocKind(kind) ? a?.time_text : '');
-            document.getElementById('ae-private').checked = !!a?.is_private;
+            setVis(a ? visOf(a) : (isDocKind(kind) ? ['teacher'] : ['public']));
             if (isDocKind(kind) && !a) val('ae-date', todayStr());
             actRenderDocList();
             const mt = a?.media_type === 'youtube' || a?.media_type === 'facebook' ? 'link' : (a?.media_type || 'image');
@@ -4126,7 +4228,7 @@ addEventListener('resize',fit);
             const id = document.getElementById('ae-id').value, kind = document.getElementById('ae-kind').value;
             if (isDocKind(kind)) return actSaveDoc(id, kind, fail);
             const g = elId => document.getElementById(elId).value.trim();
-            const base = { kind, title: g('ae-title'), category: g('ae-category'), updated_at: new Date().toISOString() };
+            const base = { kind, title: g('ae-title'), category: g('ae-category'), visible_to: getVis(), is_private: !getVis().length, updated_at: new Date().toISOString() };
             if (!base.title) return fail(kind === 'media' ? 'Hãy nhập chú thích cho ảnh / video.' : 'Hãy nhập tiêu đề.');
             const imgUrl = g('ae-image-url');
             if (imgUrl && !safeUrl(imgUrl)) return fail('Link ảnh phải bắt đầu bằng https://');
