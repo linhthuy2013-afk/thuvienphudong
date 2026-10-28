@@ -103,6 +103,7 @@
         .flip-page img { width: calc(100% + 1px); max-width: none; height: 100%; display: block; }
         .flip-end { width: 100%; height: 100%; background: #e6eeff; color: #006591; display: flex; align-items: center; justify-content: center; font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 20px; }
 
+        .flip-fit .flip-page img { object-fit: contain; background: #ffffff; }
         .flip-qr { position: absolute; right: 4%; bottom: 3%; width: 18%; min-width: 44px; max-width: 110px; padding: 4px; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
         #qr-print-sheet { display: none; }
         @media print {
@@ -661,7 +662,7 @@
         <section id="tab-reader" class="tab-content hidden space-y-6">
             
             <!-- Reader Mode Specialized Top Toolbar -->
-            <div class="bg-white p-4 rounded-2xl border border-surface-container-high shadow-sm flex flex-col md:flex-row items-center justify-between gap-4 sticky top-20 z-40">
+            <div class="bg-white p-4 rounded-2xl border border-surface-container-high shadow-sm flex flex-col md:flex-row items-center justify-between gap-4 md:sticky md:top-20 z-40">
                 
                 <!-- Back Button & Book Title Info -->
                 <div class="flex items-center gap-3 w-full md:w-auto">
@@ -683,7 +684,7 @@
                 </div>
 
                 <!-- Reader Controls (Theme, Size, Ruler, Audio Toggle) -->
-                <div class="flex flex-wrap items-center justify-end gap-2.5 w-full md:w-auto">
+                <div id="reader-text-controls" class="flex flex-wrap items-center justify-end gap-2.5 w-full md:w-auto">
                     
                     <!-- Color Themes Switcher -->
                     <div class="flex items-center bg-surface-container p-1 rounded-full border border-surface-container-high">
@@ -746,7 +747,7 @@
 
             <!-- Flipbook Reader (sách tạo từ ảnh / PDF) -->
             <div id="flip-reader" class="hidden space-y-4">
-                <div id="flip-reader-stage" class="flex justify-center rounded-2xl bg-gradient-to-b from-slate-700 to-slate-900 p-4 sm:p-6 shadow-lg min-h-[300px] items-center"></div>
+                <div id="flip-reader-stage" class="flex justify-center rounded-2xl bg-gradient-to-b from-slate-700 to-slate-900 p-1 sm:p-6 shadow-lg min-h-[300px] items-center"></div>
                 <div class="flex flex-wrap items-center justify-center gap-2.5 text-xs font-bold">
                     <button onclick="flipReaderPrev()" class="px-4 py-2 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm">west</span> Trang trước
@@ -755,6 +756,9 @@
                     <button onclick="flipReaderNext()" class="px-4 py-2 rounded-full bg-primary hover:bg-sky-800 text-white flex items-center gap-1">
                         Trang sau <span class="material-symbols-outlined text-sm">east</span>
                     </button>
+                    <button onclick="enterImmersive()" class="px-4 py-2 rounded-full bg-slate-800 hover:bg-slate-900 text-white flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">fullscreen</span> Toàn màn hình
+                    </button>
                     <button onclick="openQrModal(flipReaderRec?.id)" class="px-4 py-2 rounded-full bg-sky-100 hover:bg-sky-200 text-primary flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm">qr_code_2</span> Mã QR
                     </button>
@@ -762,7 +766,7 @@
                         Đã Đọc Xong (+15 Sao) <span class="material-symbols-outlined text-sm">check</span>
                     </button>
                 </div>
-                <p class="text-center text-[11px] text-on-surface-variant">Kéo góc trang để lật, hoặc dùng phím mũi tên ← →</p>
+                <p class="text-center text-[11px] text-on-surface-variant">Vuốt hoặc kéo góc trang để lật • Máy tính: phím mũi tên ← →</p>
             </div>
 
             <!-- Simulated E-Book Canvas Area -->
@@ -1160,6 +1164,34 @@
         </div>
     </div>
 
+    <!-- CHẾ ĐỘ ĐỌC TOÀN MÀN HÌNH -->
+    <div id="flip-immersive" class="hidden fixed inset-0 z-[70] bg-slate-950 flex flex-col select-none">
+        <div class="flex items-center gap-2 px-2 pb-1.5 text-white" style="padding-top: max(6px, env(safe-area-inset-top, 0px))">
+            <button onclick="closeImmersive()" class="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center shrink-0" title="Thoát toàn màn hình">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <div class="min-w-0 flex-1">
+                <div id="imm-title" class="font-heading font-bold text-sm truncate"></div>
+                <div id="imm-num" class="text-[11px] text-white/70 tabular-nums"></div>
+            </div>
+            <button onclick="openQrModal(flipReaderRec?.id)" class="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center shrink-0" title="Mã QR của sách">
+                <span class="material-symbols-outlined">qr_code_2</span>
+            </button>
+        </div>
+        <div id="imm-stage" class="flex-1 min-h-0 flex items-center justify-center px-1"></div>
+        <div class="flex items-center justify-between gap-2 px-3 pt-2 text-xs font-bold" style="padding-bottom: max(8px, env(safe-area-inset-bottom, 0px))">
+            <button onclick="flipReaderPrev()" class="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center shrink-0" title="Trang trước">
+                <span class="material-symbols-outlined">west</span>
+            </button>
+            <button onclick="finishBookReading()" class="px-4 py-2.5 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 flex items-center gap-1">
+                Đã Đọc Xong (+15 Sao) <span class="material-symbols-outlined text-sm">check</span>
+            </button>
+            <button onclick="flipReaderNext()" class="w-11 h-11 rounded-full bg-primary hover:bg-sky-800 text-white flex items-center justify-center shrink-0" title="Trang sau">
+                <span class="material-symbols-outlined">east</span>
+            </button>
+        </div>
+    </div>
+
     <!-- MÃ QR CỦA SÁCH -->
     <div id="qrModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[85] hidden flex items-center justify-center p-4" onclick="if(event.target===this)closeQrModal()">
         <div class="bg-white rounded-custom p-6 sm:p-7 max-w-sm w-full shadow-2xl border border-surface-container-high space-y-4 relative text-center">
@@ -1380,7 +1412,7 @@
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-surface-container-high/60 mt-8 pt-6 text-center">
-            © 2026 Trường Tiểu Học Phù Đổng. Hệ Thống Đọc Sách & Phân Quyền Quản Lý.
+            © 2026 Trường Tiểu Học Phù Đổng. Hệ Thống Đọc Sách & Phân Quyền Quản Lý. <span class="opacity-70">• Phiên bản 28/10b – đọc 9:16 trên điện thoại</span>
         </div>
     </footer>
 
@@ -2509,10 +2541,11 @@
         function flipSortByName() { flipItems.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true })); renderFlipGrid(); }
 
         // ---------- DỰNG SÁCH LẬT TRANG ----------
-        function mountFlipBook(stage, srcs, W, H, maxW, maxH, onFlip, coverQr) {
+        function mountFlipBook(stage, srcs, W, H, maxW, maxH, onFlip, coverQr, fit) {
             stage.innerHTML = '';
             const holder = document.createElement('div');   // khung cố định kích thước, sách co giãn theo khung này
             holder.style.maxWidth = '100%';
+            if (fit) holder.className = 'flip-fit';          // ảnh trang nằm gọn trong khung 9:16, không bị kéo méo
             const book = document.createElement('div');
             book.className = 'flip-book';
             holder.appendChild(book);
@@ -2525,7 +2558,7 @@
                 if (i === 0 && coverQr) p.insertAdjacentHTML('beforeend', `<div class="flip-qr">${coverQr}</div>`);
                 book.appendChild(p);
             });
-            const two = maxW > 640;
+            const two = maxW > 640 && maxW > maxH;
             const pw = Math.floor(Math.max(120, Math.min(W, maxH * W / H, two ? maxW / 2 : maxW)));
             holder.style.width = (two ? pw * 2 : pw) + 'px';
             const pf = new St.PageFlip(book, {
@@ -2564,9 +2597,14 @@
 
         // ---------- ĐỌC SÁCH LẬT TRANG Ở TAB ĐỌC SÁCH ----------
         let flipReaderBook = null, flipReaderUrls = [], flipReaderRec = null;
+        let immersive = false, immPushed = false;
+        const isPhone = () => innerWidth < 768;
         function hideFlipReader() {
             try { flipReaderBook && flipReaderBook.destroy(); } catch (e) {}
             flipReaderBook = null;
+            if (immersive) { immersive = false; document.getElementById('flip-immersive').classList.add('hidden'); document.body.style.overflow = ''; }
+            document.getElementById('imm-stage').innerHTML = '';
+            document.getElementById('reader-text-controls').classList.remove('hidden');
             flipReaderUrls = []; flipReaderRec = null;
             document.getElementById('flip-reader-stage').innerHTML = '';
             document.getElementById('flip-reader').classList.add('hidden');
@@ -2578,24 +2616,67 @@
                 showToast('Chưa tải được trang sách lật. Kiểm tra kết nối mạng rồi thử lại.', 'error');
                 return;
             }
-            flipReaderRec = { id: book.id, w: book.flipW || 800, h: book.flipH || 1100 };
+            flipReaderRec = { id: book.id, title: book.title, w: book.flipW || 800, h: book.flipH || 1100 };
             flipReaderUrls = Array.from({ length: book.flipPages }, (_, i) => flipPageUrl(book, i + 1));
             document.getElementById('reader-canvas').classList.add('hidden');
+            document.getElementById('reader-text-controls').classList.add('hidden');   // cỡ chữ, thước dòng… không dùng cho sách ảnh
             document.getElementById('flip-reader').classList.remove('hidden');
-            mountFlipReader(0);
+            if (isPhone()) enterImmersive(0); else mountFlipReader(0);
         }
+        // Điện thoại: mỗi trang hiện trong khung 9:16 rộng hết màn hình. Máy tính: giữ tỷ lệ trang gốc, mở 2 trang.
         function mountFlipReader(startPage) {
             if (!flipReaderRec) return;
             try { flipReaderBook && flipReaderBook.destroy(); } catch (e) {}
-            const stage = document.getElementById('flip-reader-stage');
-            const maxW = stage.clientWidth - 32, maxH = Math.max(320, innerHeight - 300);
-            const num = document.getElementById('flip-reader-num');
-            flipReaderBook = mountFlipBook(stage, flipReaderUrls, flipReaderRec.w, flipReaderRec.h, maxW, maxH,
-                () => { if (flipReaderBook) num.textContent = `Trang ${flipReaderBook.getCurrentPageIndex() + 1} / ${flipReaderBook.getPageCount()}`; },
-                flipReaderRec.id ? qrSvg(bookLink(flipReaderRec.id), 1) : null);
+            flipReaderBook = null;
+            document.getElementById('flip-reader-stage').innerHTML = '';
+            document.getElementById('imm-stage').innerHTML = '';
+            const phone = isPhone();
+            let stage, maxW, maxH, W = flipReaderRec.w, H = flipReaderRec.h, fit = false;
+            if (immersive) {
+                stage = document.getElementById('imm-stage');
+                maxW = stage.clientWidth - 4; maxH = stage.clientHeight - 4;
+            } else {
+                stage = document.getElementById('flip-reader-stage');
+                maxW = stage.clientWidth - (phone ? 8 : 32);
+                maxH = phone ? Math.max(420, innerHeight - 170) : Math.max(320, innerHeight - 300);
+            }
+            if (phone) { W = 900; H = 1600; fit = true; }   // khung 9:16
+            const upd = () => {
+                if (!flipReaderBook) return;
+                const s = `Trang ${flipReaderBook.getCurrentPageIndex() + 1} / ${flipReaderBook.getPageCount()}`;
+                document.getElementById('flip-reader-num').textContent = s;
+                document.getElementById('imm-num').textContent = s;
+            };
+            flipReaderBook = mountFlipBook(stage, flipReaderUrls, W, H, maxW, maxH, upd,
+                flipReaderRec.id ? qrSvg(bookLink(flipReaderRec.id), 1) : null, fit);
             if (startPage) flipReaderBook.turnToPage(startPage);
-            num.textContent = `Trang ${flipReaderBook.getCurrentPageIndex() + 1} / ${flipReaderBook.getPageCount()}`;
+            upd();
         }
+        function enterImmersive(startPage) {
+            if (!flipReaderRec) return;
+            const page = startPage ?? (flipReaderBook ? flipReaderBook.getCurrentPageIndex() : 0);
+            immersive = true;
+            document.getElementById('imm-title').textContent = flipReaderRec.title || '';
+            document.getElementById('flip-immersive').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            if (!immPushed) { try { history.pushState({ flipImmersive: 1 }, ''); immPushed = true; } catch (e) {} }   // nút Quay lại của điện thoại sẽ thoát chế độ này
+            try { document.documentElement.requestFullscreen?.({ navigationUI: 'hide' })?.catch(() => {}); } catch (e) {}
+            requestAnimationFrame(() => mountFlipReader(page));
+        }
+        function exitImmersive() {
+            if (!immersive) return;
+            const page = flipReaderBook ? flipReaderBook.getCurrentPageIndex() : 0;
+            immersive = false;
+            document.getElementById('flip-immersive').classList.add('hidden');
+            document.body.style.overflow = '';
+            try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch (e) {}
+            requestAnimationFrame(() => mountFlipReader(page));
+        }
+        function closeImmersive() {
+            if (immPushed) { immPushed = false; history.back(); return; }   // popstate sẽ gọi exitImmersive
+            exitImmersive();
+        }
+        window.addEventListener('popstate', () => { if (immersive) { immPushed = false; exitImmersive(); } });
         function flipReaderPrev() { flipReaderBook && flipReaderBook.flipPrev(); }
         function flipReaderNext() { flipReaderBook && flipReaderBook.flipNext(); }
         let flipResizeTimer = null;
