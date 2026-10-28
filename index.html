@@ -979,6 +979,24 @@
             </div>
         </div>
 
+        <!-- SECTION: KẾ HOẠCH & BÁO CÁO -->
+        <div class="py-10 bg-white rounded-custom border border-surface-container-high">
+            <div class="px-4 sm:px-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
+                    <div>
+                        <span class="text-sky-700 font-bold text-sm tracking-wider uppercase"><i class="fa-solid fa-folder-open mr-1"></i> Hồ Sơ Thư Viện</span>
+                        <h3 class="text-2xl sm:text-3xl font-black text-slate-800 mt-1">Kế Hoạch & Báo Cáo</h3>
+                        <p class="text-slate-600 text-sm mt-1">Kế hoạch và báo cáo hoạt động thư viện – xem trực tuyến hoặc tải về</p>
+                    </div>
+                    <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-2xl text-sm">
+                        <button type="button" id="act-doc-tab-plan" onclick="actSetDocTab('plan')" class="px-4 py-2 rounded-xl bg-white shadow-sm text-sky-700 font-bold"><i class="fa-solid fa-clipboard-list"></i> Kế hoạch <span id="act-doc-count-plan"></span></button>
+                        <button type="button" id="act-doc-tab-report" onclick="actSetDocTab('report')" class="px-4 py-2 rounded-xl text-slate-600 hover:text-slate-900 font-semibold"><i class="fa-solid fa-chart-column"></i> Báo cáo <span id="act-doc-count-report"></span></button>
+                    </div>
+                </div>
+                <div id="act-docs" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+            </div>
+        </div>
+
         <!-- SECTION 4: INTERACTIVE / SUGGESTION CORNER -->
         <div class="py-10 bg-gradient-to-tr from-amber-500 to-orange-500 text-white relative overflow-hidden rounded-custom">
             <div class="px-4 sm:px-8 relative z-10">
@@ -1150,18 +1168,22 @@
                 <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                     <div>
                         <h2 class="font-heading font-bold text-xl text-on-surface">Quản Lý Hoạt Động Thư Viện</h2>
-                        <p class="text-xs text-on-surface-variant">Thêm sự kiện, tin tức, ảnh và video cho tab Hoạt Động Thư Viện; xem học sinh đăng ký và góp ý</p>
+                        <p class="text-xs text-on-surface-variant">Thêm sự kiện, tin tức, ảnh, video, kế hoạch và báo cáo cho tab Hoạt Động Thư Viện; xem học sinh đăng ký và góp ý</p>
                     </div>
                     <div class="flex flex-wrap items-center gap-2 text-xs font-bold">
                         <button onclick="actOpenEditor('event')" class="px-3.5 py-2 rounded-full bg-sky-600 hover:bg-sky-700 text-white flex items-center gap-1.5"><i class="fa-solid fa-calendar-plus"></i> Sự kiện</button>
                         <button onclick="actOpenEditor('news')" class="px-3.5 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-1.5"><i class="fa-solid fa-newspaper"></i> Tin tức</button>
                         <button onclick="actOpenEditor('media')" class="px-3.5 py-2 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center gap-1.5"><i class="fa-solid fa-photo-film"></i> Ảnh / Video</button>
+                        <button onclick="actOpenEditor('plan')" class="px-3.5 py-2 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5"><i class="fa-solid fa-clipboard-list"></i> Kế hoạch</button>
+                        <button onclick="actOpenEditor('report')" class="px-3.5 py-2 rounded-full bg-teal-600 hover:bg-teal-700 text-white flex items-center gap-1.5"><i class="fa-solid fa-chart-column"></i> Báo cáo</button>
                     </div>
                 </div>
                 <div class="flex gap-1 overflow-x-auto bg-surface-container-low p-1 rounded-full text-xs font-bold" id="aa-tabs">
                     <button onclick="actAdminTab('event')" data-aa="event" class="aa-tab px-3.5 py-2 rounded-full whitespace-nowrap">Sự kiện <span class="aa-count"></span></button>
                     <button onclick="actAdminTab('news')" data-aa="news" class="aa-tab px-3.5 py-2 rounded-full whitespace-nowrap">Tin tức <span class="aa-count"></span></button>
                     <button onclick="actAdminTab('media')" data-aa="media" class="aa-tab px-3.5 py-2 rounded-full whitespace-nowrap">Ảnh & Video <span class="aa-count"></span></button>
+                    <button onclick="actAdminTab('plan')" data-aa="plan" class="aa-tab px-3.5 py-2 rounded-full whitespace-nowrap">Kế hoạch <span class="aa-count"></span></button>
+                    <button onclick="actAdminTab('report')" data-aa="report" class="aa-tab px-3.5 py-2 rounded-full whitespace-nowrap">Báo cáo <span class="aa-count"></span></button>
                     <button onclick="actAdminTab('reg')" data-aa="reg" class="aa-tab px-3.5 py-2 rounded-full whitespace-nowrap">Đăng ký <span class="aa-count"></span></button>
                     <button onclick="actAdminTab('sug')" data-aa="sug" class="aa-tab px-3.5 py-2 rounded-full whitespace-nowrap">Góp ý & Đề xuất <span class="aa-count"></span></button>
                 </div>
@@ -1633,7 +1655,11 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
+                    <div data-ae="plan report">
+                        <label for="ae-period" class="block font-bold text-on-surface mb-1">Thời kỳ</label>
+                        <input id="ae-period" type="text" maxlength="80" placeholder="Năm học 2026 – 2027 / Tháng 11/2026 / Học kỳ I" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/>
+                    </div>
+                    <div data-ae="event news media">
                         <label for="ae-category" class="block font-bold text-on-surface mb-1">Nhóm hoạt động</label>
                         <select id="ae-category" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary font-bold">
                             <option value="tiet-doc">Tiết Đọc Thư Viện</option>
@@ -1642,7 +1668,7 @@
                             <option value="phong-trao">Phong Trào & Tủ Sách</option>
                         </select>
                     </div>
-                    <div data-ae="event news">
+                    <div data-ae="event news plan report">
                         <label for="ae-date" class="block font-bold text-on-surface mb-1"><span id="ae-date-label">Ngày diễn ra</span> <span class="text-red-500" data-ae="event">*</span></label>
                         <input id="ae-date" type="date" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/>
                     </div>
@@ -1667,15 +1693,28 @@
                     </div>
                 </div>
 
-                <div data-ae="news">
-                    <label for="ae-author" class="block font-bold text-on-surface mb-1">Người viết</label>
+                <div data-ae="news plan report">
+                    <label for="ae-author" class="block font-bold text-on-surface mb-1"><span id="ae-author-label">Người viết</span></label>
                     <input id="ae-author" type="text" maxlength="80" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"/>
                 </div>
 
-                <div data-ae="event news">
+                <div data-ae="event news plan report">
                     <label for="ae-body" class="block font-bold text-on-surface mb-1"><span id="ae-body-label">Mô tả</span></label>
                     <textarea id="ae-body" rows="4" maxlength="20000" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high outline-none focus:border-primary"></textarea>
                 </div>
+
+                <!-- Kế hoạch / Báo cáo: file đính kèm -->
+                <div data-ae="plan report" class="rounded-2xl border-2 border-dashed border-sky-200 bg-sky-50/60 p-3 space-y-2" id="ae-doc-drop">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <span class="font-bold text-on-surface">File đính kèm <span class="text-red-500">*</span> <span class="font-normal text-on-surface-variant">– PDF (≤ 50 MB) hoặc ảnh chụp từng trang, chọn được nhiều file</span></span>
+                        <label for="ae-doc-file" class="cursor-pointer px-3 py-1.5 rounded-full bg-primary hover:bg-sky-800 text-white font-bold flex items-center gap-1"><i class="fa-solid fa-upload"></i> Chọn file</label>
+                        <input id="ae-doc-file" type="file" accept="application/pdf,image/*" multiple class="hidden" onchange="actPickDocs(this.files)"/>
+                    </div>
+                    <div id="ae-doc-list" class="space-y-1.5"></div>
+                </div>
+                <label data-ae="plan report" class="flex items-center gap-2 font-bold cursor-pointer">
+                    <input id="ae-private" type="checkbox" class="w-4 h-4 rounded"/> <i class="fa-solid fa-lock text-slate-500"></i> Tài liệu nội bộ (chỉ quản trị viên xem được, không hiện cho học sinh và phụ huynh)
+                </label>
 
                 <label data-ae="event" class="flex items-center gap-2 font-bold cursor-pointer">
                     <input id="ae-register" type="checkbox" class="w-4 h-4 rounded"/> Cho học sinh bấm "Đăng ký tham gia"
@@ -1778,7 +1817,7 @@
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-surface-container-high/60 mt-8 pt-6 text-center">
-            © 2026 Trường Tiểu Học Phù Đổng. Hệ Thống Đọc Sách & Phân Quyền Quản Lý. <span class="opacity-70">• Phiên bản 28/10d – quản lý Hoạt Động Thư Viện</span>
+            © 2026 Trường Tiểu Học Phù Đổng. Hệ Thống Đọc Sách & Phân Quyền Quản Lý. <span class="opacity-70">• Phiên bản 28/10e – Kế hoạch & Báo cáo</span>
         </div>
     </footer>
 
@@ -2121,7 +2160,7 @@
                 closeAuthModal();
                 updateAppRoleView();
                 if (prof.role === 'admin') { loadStudents(); loadActInbox(); }
-                loadLeaderboard();
+                loadLeaderboard(); loadActivities();   // tài liệu nội bộ chỉ hiện với quản trị viên
                 if (!openPendingBook()) switchTab(prof.role === 'admin' ? 'tab-admin-dashboard' : 'tab-kham-pha');
                 showToast(prof.role === 'admin' ? `Xin chào ${prof.name}! Đã vào trang quản trị.` : `Chào mừng ${shortName(prof)} quay lại thư viện!`);
             } catch (err) {
@@ -2139,7 +2178,7 @@
             try { localStorage.removeItem('phudong_temp'); } catch (e) {}
             hideFlipReader();
             updateAppRoleView();
-            loadLeaderboard();
+            loadLeaderboard(); loadActivities();
             switchTab('tab-kham-pha');
             showToast(`Đã đăng xuất${name ? ' tài khoản ' + name : ''}.`, 'info');
         }
@@ -3321,7 +3360,7 @@ addEventListener('resize',fit);
         function actToggleGallery() { actGalleryAll = !actGalleryAll; renderActGallery(); }
         function actToggleNews() { actNewsAll = !actNewsAll; renderActNews(); }
 
-        function renderActivities() { renderActEvents(); renderActGallery(); renderActNews(); }
+        function renderActivities() { renderActEvents(); renderActGallery(); renderActNews(); renderActDocs(); }
         const actEmpty = msg => `<div class="col-span-full py-10 text-center text-slate-500 font-bold text-sm">${msg}</div>`;
 
         // ---------- Sự kiện ----------
@@ -3438,6 +3477,7 @@ addEventListener('resize',fit);
             document.getElementById('act-lightbox').classList.remove('hidden');
         }
         function actCloseLightbox() {
+            docView = null;
             document.getElementById('act-lightbox').classList.add('hidden');
             document.getElementById('act-lightbox-body').innerHTML = '';   // dừng video đang phát
         }
@@ -3581,6 +3621,209 @@ addEventListener('resize',fit);
             if (c && !c.value) c.value = currentUser.className;
         }
 
+        // ================= KẾ HOẠCH & BÁO CÁO (file PDF hoặc ảnh) =================
+        const DOC_KINDS = ['plan', 'report'];
+        const isDocKind = k => DOC_KINDS.includes(k);
+        let actDocTab = 'plan';
+        const fmtSize = b => b >= 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
+        const docFiles = a => Array.isArray(a.attachments) ? a.attachments.filter(f => safeUrl(f.url)) : [];
+        // Link tải về (Supabase tự đặt tên file khi có ?download=)
+        const downloadUrl = f => isActBucket(f.url) ? f.url + (f.url.includes('?') ? '&' : '?') + 'download=' + encodeURIComponent(f.name || 'tai-lieu') : f.url;
+
+        function actSetDocTab(k) {
+            actDocTab = k;
+            const on = 'px-4 py-2 rounded-xl bg-white shadow-sm text-sky-700 font-bold', off = 'px-4 py-2 rounded-xl text-slate-600 hover:text-slate-900 font-semibold';
+            document.getElementById('act-doc-tab-plan').className = k === 'plan' ? on : off;
+            document.getElementById('act-doc-tab-report').className = k === 'report' ? on : off;
+            renderActDocs();
+        }
+        function renderActDocs() {
+            const box = document.getElementById('act-docs');
+            if (!box) return;
+            if (!actLoaded || actError) { box.innerHTML = ''; return; }
+            ['plan', 'report'].forEach(k => {
+                const n = actData.filter(a => a.kind === k).length;
+                const el = document.getElementById('act-doc-count-' + k);
+                if (el) el.textContent = n ? `(${n})` : '';
+            });
+            const q = (document.getElementById('act-search')?.value || '').toLowerCase().trim();
+            const list = actData.filter(a => a.kind === actDocTab && (!q || [a.title, a.body, a.time_text, a.author].some(v => String(v || '').toLowerCase().includes(q))))
+                .sort((a, b) => String(b.event_date || '').localeCompare(String(a.event_date || '')) || String(b.created_at).localeCompare(String(a.created_at)));
+            if (!list.length) {
+                box.innerHTML = actEmpty(actDocTab === 'plan' ? 'Chưa có kế hoạch nào được đăng.' : 'Chưa có báo cáo nào được đăng.');
+                return;
+            }
+            box.innerHTML = list.map(a => {
+                const files = docFiles(a), pdfs = files.filter(f => f.type === 'pdf'), imgs = files.filter(f => f.type === 'image');
+                const isPlan = a.kind === 'plan';
+                const fileBtns = [
+                    ...pdfs.map(f => `
+                        <div class="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-slate-200">
+                            <i class="fa-solid fa-file-pdf text-rose-600 text-xl shrink-0"></i>
+                            <div class="min-w-0 flex-1"><div class="text-xs font-bold text-slate-700 truncate" title="${esc(f.name)}">${esc(f.name || 'Tài liệu.pdf')}</div>${f.size ? `<div class="text-[10px] text-slate-400">${fmtSize(f.size)}</div>` : ''}</div>
+                            <a href="${esc(f.url)}" target="_blank" rel="noopener" class="px-2.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-[11px] font-bold shrink-0">Xem</a>
+                            <a href="${esc(downloadUrl(f))}" target="_blank" rel="noopener" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold shrink-0" title="Tải về"><i class="fa-solid fa-download"></i></a>
+                        </div>`),
+                    imgs.length ? `
+                        <button type="button" onclick="actOpenDocImages('${a.id}', 0)" class="w-full flex items-center gap-2 p-2.5 rounded-xl bg-white border border-slate-200 hover:border-sky-400 text-left">
+                            <div class="flex -space-x-3 shrink-0">${imgs.slice(0, 3).map(f => `<img src="${esc(f.url)}" alt="" loading="lazy" class="w-9 h-11 object-cover rounded-md border-2 border-white shadow-sm bg-slate-100">`).join('')}</div>
+                            <div class="min-w-0 flex-1 text-xs font-bold text-slate-700">${imgs.length} ảnh – bấm để xem</div>
+                            <i class="fa-solid fa-images text-sky-600"></i>
+                        </button>` : ''
+                ].join('');
+                return `
+                    <div class="bg-slate-50 rounded-3xl p-5 border border-slate-100 hover:shadow-lg transition-shadow flex flex-col gap-3">
+                        <div class="flex items-start gap-3">
+                            <div class="w-11 h-11 rounded-2xl ${isPlan ? 'bg-sky-100 text-sky-700' : 'bg-emerald-100 text-emerald-700'} flex items-center justify-center text-lg shrink-0">
+                                <i class="fa-solid ${isPlan ? 'fa-clipboard-list' : 'fa-chart-column'}"></i>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-bold text-slate-400">
+                                    ${a.time_text ? `<span class="px-2 py-0.5 rounded-full ${isPlan ? 'bg-sky-100 text-sky-800' : 'bg-emerald-100 text-emerald-800'}">${esc(a.time_text)}</span>` : ''}
+                                    ${a.event_date ? `<span><i class="fa-regular fa-calendar"></i> ${fmtDate(a.event_date)}</span>` : ''}
+                                    ${a.is_private ? '<span class="px-2 py-0.5 rounded-full bg-slate-800 text-white"><i class="fa-solid fa-lock"></i> Nội bộ</span>' : ''}
+                                </div>
+                                <h4 class="text-base font-bold text-slate-800 mt-1 leading-snug">${esc(a.title)}</h4>
+                                ${a.author ? `<div class="text-[11px] text-slate-500 mt-0.5">Người lập: ${esc(a.author)}</div>` : ''}
+                            </div>
+                        </div>
+                        ${a.body ? `<p class="text-sm text-slate-600 line-clamp-3 whitespace-pre-line">${esc(a.body)}</p>` : ''}
+                        <div class="space-y-2 mt-auto">${fileBtns || '<div class="text-xs text-slate-400">Chưa có file đính kèm.</div>'}</div>
+                    </div>`;
+            }).join('');
+        }
+
+        // Xem các ảnh của 1 tài liệu (lật qua lại)
+        let docView = null;
+        function actOpenDocImages(id, idx) {
+            const a = actById(id);
+            if (!a) return;
+            const imgs = docFiles(a).filter(f => f.type === 'image');
+            if (!imgs.length) return;
+            docView = { a, imgs, i: Math.max(0, Math.min(idx, imgs.length - 1)) };
+            actRenderDocImage();
+            document.getElementById('act-lightbox').classList.remove('hidden');
+        }
+        function actRenderDocImage() {
+            const { a, imgs, i } = docView, f = imgs[i];
+            document.getElementById('act-lightbox-body').innerHTML = `
+                <div class="relative w-full flex items-center justify-center">
+                    ${imgs.length > 1 ? `<button onclick="actDocStep(-1)" class="absolute left-0 sm:-left-14 z-10 w-11 h-11 rounded-full bg-white/15 hover:bg-white/30 text-white text-lg" title="Trang trước"><i class="fa-solid fa-chevron-left"></i></button>` : ''}
+                    <img src="${esc(f.url)}" alt="${esc(a.title)}" class="max-h-[78vh] max-w-full rounded-xl shadow-2xl object-contain bg-white">
+                    ${imgs.length > 1 ? `<button onclick="actDocStep(1)" class="absolute right-0 sm:-right-14 z-10 w-11 h-11 rounded-full bg-white/15 hover:bg-white/30 text-white text-lg" title="Trang sau"><i class="fa-solid fa-chevron-right"></i></button>` : ''}
+                </div>
+                <div class="absolute -top-12 left-0 flex gap-2">
+                    <a href="${esc(downloadUrl(f))}" target="_blank" rel="noopener" class="px-3 py-2 rounded-full bg-white/15 hover:bg-white/30 text-white text-xs font-bold"><i class="fa-solid fa-download"></i> Tải ảnh này</a>
+                </div>`;
+            document.getElementById('act-lightbox-caption').textContent = `${a.title} — trang ${i + 1}/${imgs.length}`;
+        }
+        function actDocStep(d) {
+            if (!docView) return;
+            docView.i = (docView.i + d + docView.imgs.length) % docView.imgs.length;
+            actRenderDocImage();
+        }
+        document.addEventListener('keydown', e => {
+            if (!docView || document.getElementById('act-lightbox').classList.contains('hidden')) return;
+            if (e.key === 'ArrowLeft') actDocStep(-1);
+            if (e.key === 'ArrowRight') actDocStep(1);
+        });
+
+        // ---------- Trình soạn: file đính kèm ----------
+        let aeDocs = [];   // { url?, name, type, size, blob?, preview? }  — có url = file đã lưu
+        function actRenderDocList() {
+            const box = document.getElementById('ae-doc-list');
+            if (!box) return;
+            box.innerHTML = aeDocs.length ? aeDocs.map((f, i) => `
+                <div class="flex items-center gap-2 p-2 rounded-xl bg-white border border-surface-container-high">
+                    ${f.type === 'pdf' ? '<i class="fa-solid fa-file-pdf text-rose-600 text-xl w-10 text-center shrink-0"></i>'
+                        : `<img src="${esc(f.preview || f.url)}" alt="" class="w-10 h-12 object-cover rounded-md border border-surface-container-high shrink-0">`}
+                    <div class="min-w-0 flex-1"><div class="font-bold truncate">${esc(f.name)}</div>
+                        <div class="text-[10px] text-on-surface-variant">${f.size ? fmtSize(f.size) : ''}${f.url ? ' • đã lưu' : ' • chưa tải lên'}</div></div>
+                    <button type="button" onclick="actDocMove(${i},-1)" class="w-7 h-7 rounded-md bg-surface-container-low hover:bg-surface-container-high font-bold ${i === 0 ? 'invisible' : ''}" title="Lên trên">↑</button>
+                    <button type="button" onclick="actDocMove(${i},1)" class="w-7 h-7 rounded-md bg-surface-container-low hover:bg-surface-container-high font-bold ${i === aeDocs.length - 1 ? 'invisible' : ''}" title="Xuống dưới">↓</button>
+                    <button type="button" onclick="aeDocs.splice(${i},1);actRenderDocList()" class="w-7 h-7 rounded-md bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold" title="Bỏ file">✕</button>
+                </div>`).join('') : '<div class="text-[11px] text-on-surface-variant">Chưa có file nào.</div>';
+        }
+        function actDocMove(i, d) {
+            const j = i + d;
+            if (j < 0 || j >= aeDocs.length) return;
+            [aeDocs[i], aeDocs[j]] = [aeDocs[j], aeDocs[i]];
+            actRenderDocList();
+        }
+        async function actPickDocs(files) {
+            const input = document.getElementById('ae-doc-file');
+            const list = [...files];
+            input.value = '';
+            const btn = document.getElementById('ae-save'); btn.disabled = true; btn.textContent = 'Đang xử lý file…';
+            try {
+                for (const f of list) {
+                    if (f.type === 'application/pdf' || /\.pdf$/i.test(f.name)) {
+                        if (f.size > 50 * 1048576) { showToast(`${f.name} nặng ${(f.size / 1048576).toFixed(0)} MB, vượt giới hạn 50 MB.`, 'error'); continue; }
+                        aeDocs.push({ name: f.name, type: 'pdf', size: f.size, blob: f });
+                    } else if (f.type.startsWith('image/') || /\.(jpe?g|png|webp|heic)$/i.test(f.name)) {
+                        try {
+                            const im = await shrinkImage(f, 2200);   // giữ đủ nét để đọc chữ
+                            aeDocs.push({ name: f.name.replace(/\.\w+$/, '') + '.jpg', type: 'image', size: im.blob.size, blob: im.blob, preview: im.preview });
+                        } catch (e) { showToast('Không đọc được ảnh ' + f.name + '. Hãy chọn ảnh JPG hoặc PNG.', 'error'); }
+                    } else {
+                        showToast(`${f.name}: chỉ nhận file PDF hoặc ảnh.`, 'error');
+                    }
+                }
+            } finally { btn.disabled = false; btn.textContent = 'Lưu'; actRenderDocList(); }
+        }
+
+        async function actSaveDoc(id, kind, fail) {
+            const g = elId => document.getElementById(elId).value.trim();
+            const title = g('ae-title');
+            if (!title) return fail('Hãy nhập tên ' + (kind === 'plan' ? 'kế hoạch.' : 'báo cáo.'));
+            if (!aeDocs.length) return fail('Hãy chọn ít nhất một file PDF hoặc ảnh.');
+            const btn = document.getElementById('ae-save');
+            btn.disabled = true;
+            const uploaded = [];
+            try {
+                const attachments = [];
+                const pending = aeDocs.filter(f => !f.url).length;
+                let n = 0;
+                for (const f of aeDocs) {
+                    if (f.url) { attachments.push({ url: f.url, name: f.name, type: f.type, size: f.size || null }); continue; }
+                    n++;
+                    btn.textContent = `Đang tải file ${n}/${pending}…`;
+                    const url = f.type === 'pdf' ? await actUpload(f.blob, 'pdf', 'application/pdf') : await actUpload(f.blob, 'jpg', 'image/jpeg');
+                    uploaded.push(url);
+                    attachments.push({ url, name: f.name, type: f.type, size: f.size || null });
+                }
+                const row = {
+                    kind, title, category: 'phong-trao',
+                    time_text: g('ae-period') || null,
+                    event_date: g('ae-date') || todayStr(),
+                    author: g('ae-author') || null,
+                    body: g('ae-body') || null,
+                    is_private: document.getElementById('ae-private').checked,
+                    attachments,
+                    updated_at: new Date().toISOString()
+                };
+                btn.textContent = 'Đang lưu…';
+                const { error } = id
+                    ? await sb.from('activities').update(row).eq('id', id)
+                    : await sb.from('activities').insert({ ...row, id: newId(), created_at: new Date().toISOString() });
+                if (error) throw error;
+                if (aeOld) {   // xoá file cũ đã bị bỏ khỏi danh sách
+                    const keep = new Set(attachments.map(f => f.url));
+                    actRemoveFiles(docFiles(aeOld).map(f => f.url).filter(u => !keep.has(u)));
+                }
+                actClose('act-editor');
+                await loadActivities();
+                showToast(id ? 'Đã cập nhật.' : `Đã đăng ${kind === 'plan' ? 'kế hoạch' : 'báo cáo'} lên tab Hoạt Động Thư Viện.`);
+                actAdminTab(kind);
+            } catch (ex) {
+                if (uploaded.length) actRemoveFiles(uploaded);
+                fail('Chưa lưu được: ' + friendlyError(ex) + (/exceeded|too large|maximum/i.test(ex?.message || '') ? ' (file quá lớn)' : '')
+                    + (/mime|not supported|invalid.*type/i.test(ex?.message || '') ? ' — hãy chạy file ke_hoach_bao_cao.sql trên Supabase.' : ''));
+            } finally {
+                btn.disabled = false; btn.textContent = 'Lưu';
+            }
+        }
+
         // ================= QUẢN TRỊ HOẠT ĐỘNG =================
         let actRegs = [], actSugs = [], actAdminView = 'event', actRegFilter = 'all', actSugFilter = 'open';
 
@@ -3604,6 +3847,8 @@ addEventListener('resize',fit);
                 event: actData.filter(a => a.kind === 'event').length,
                 news: actData.filter(a => a.kind === 'news').length,
                 media: actData.filter(a => a.kind === 'media').length,
+                plan: actData.filter(a => a.kind === 'plan').length,
+                report: actData.filter(a => a.kind === 'report').length,
                 reg: actRegs.length,
                 sug: actSugs.filter(s => !s.done).length
             };
@@ -3650,6 +3895,20 @@ addEventListener('resize',fit);
                             <div class="flex gap-1">${actions(a)}</div>
                         </div></div>`;
                 }).join('')}</div>`;
+            } else if (isDocKind(actAdminView)) {
+                const list = actData.filter(a => a.kind === actAdminView).sort((a, b) => String(b.event_date).localeCompare(String(a.event_date)));
+                const word = actAdminView === 'plan' ? 'kế hoạch' : 'báo cáo';
+                body.innerHTML = !list.length ? empty(`Chưa có ${word}. Bấm "${actAdminView === 'plan' ? 'Kế hoạch' : 'Báo cáo'}" ở trên để đăng.`) : `<div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+                    <thead><tr class="bg-surface-container-low text-on-surface-variant font-bold"><th class="p-3">Ngày</th><th class="p-3">Tên ${word}</th><th class="p-3">File</th><th class="p-3">Hiển thị</th><th class="p-3 text-right">Thao tác</th></tr></thead>
+                    <tbody class="divide-y divide-surface-container">${list.map(a => {
+                        const files = docFiles(a), pdf = files.filter(f => f.type === 'pdf').length, img = files.length - pdf;
+                        return `<tr class="hover:bg-surface-container-low/60">
+                        <td class="p-3 whitespace-nowrap font-bold text-primary">${fmtDate(a.event_date) || '—'}</td>
+                        <td class="p-3"><div class="font-bold text-on-surface">${esc(a.title)}</div><div class="text-[11px] text-on-surface-variant">${esc([a.time_text, a.author].filter(Boolean).join(' • '))}</div></td>
+                        <td class="p-3 whitespace-nowrap">${pdf ? `<span class="text-rose-700 font-bold"><i class="fa-solid fa-file-pdf"></i> ${pdf} PDF</span> ` : ''}${img ? `<span class="text-sky-700 font-bold"><i class="fa-solid fa-image"></i> ${img} ảnh</span>` : ''}</td>
+                        <td class="p-3 whitespace-nowrap">${a.is_private ? '<span class="px-2 py-0.5 rounded-full bg-slate-800 text-white font-bold"><i class="fa-solid fa-lock"></i> Nội bộ</span>' : '<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Công khai</span>'}</td>
+                        <td class="p-3 text-right whitespace-nowrap">${actions(a)}</td></tr>`;
+                    }).join('')}</tbody></table></div>`;
             } else if (actAdminView === 'reg') {
                 const events = actData.filter(a => a.kind === 'event');
                 const rows = actRegs.filter(r => actRegFilter === 'all' || r.activity_id === actRegFilter);
@@ -3758,28 +4017,34 @@ addEventListener('resize',fit);
             fileInput.multiple = kind === 'media' && !editing;
             document.getElementById('ae-image-label').textContent = kind === 'media' ? (editing ? 'Ảnh' : 'Ảnh (chọn được nhiều ảnh cùng lúc)') : kind === 'news' ? 'Ảnh minh hoạ (tuỳ chọn)' : 'Ảnh bìa (tuỳ chọn)';
             document.getElementById('ae-image-btn').textContent = kind === 'media' && !editing ? 'Chọn ảnh' : 'Chọn ảnh';
-            document.getElementById('ae-title-label').textContent = { event: 'Tên sự kiện', news: 'Tiêu đề bài viết', media: 'Chú thích' }[kind];
-            document.getElementById('ae-date-label').textContent = kind === 'news' ? 'Ngày đăng' : 'Ngày diễn ra';
-            document.getElementById('ae-body-label').textContent = kind === 'news' ? 'Nội dung bài viết' : 'Mô tả';
-            document.getElementById('ae-body').rows = kind === 'news' ? 8 : 4;
+            document.getElementById('ae-title-label').textContent = { event: 'Tên sự kiện', news: 'Tiêu đề bài viết', media: 'Chú thích', plan: 'Tên kế hoạch', report: 'Tên báo cáo' }[kind];
+            document.getElementById('ae-date-label').textContent = kind === 'news' ? 'Ngày đăng' : isDocKind(kind) ? 'Ngày ban hành' : 'Ngày diễn ra';
+            document.getElementById('ae-body-label').textContent = kind === 'news' ? 'Nội dung bài viết' : isDocKind(kind) ? 'Tóm tắt nội dung (tuỳ chọn)' : 'Mô tả';
+            document.getElementById('ae-author-label').textContent = isDocKind(kind) ? 'Người lập' : 'Người viết';
+            document.getElementById('ae-body').rows = kind === 'news' ? 8 : isDocKind(kind) ? 3 : 4;
         }
         function actOpenEditor(kind, id) {
             const a = id ? actById(id) : null;
             aeOld = a; aeImages = []; aeVideo = null;
+            aeDocs = a && isDocKind(kind) ? docFiles(a).map(f => ({ ...f })) : [];
             const f = document.getElementById('ae-form');
             f.reset();
             document.getElementById('ae-id').value = a ? a.id : '';
             document.getElementById('ae-kind').value = kind;
             document.getElementById('ae-error').classList.add('hidden');
             document.getElementById('ae-video-info').textContent = '';
-            document.getElementById('ae-title-text').textContent = (a ? 'Sửa ' : 'Thêm ') + { event: 'Sự Kiện', news: 'Tin Tức', media: 'Ảnh / Video' }[kind];
-            document.getElementById('ae-icon').innerHTML = `<i class="fa-solid ${{ event: 'fa-calendar-days', news: 'fa-newspaper', media: 'fa-photo-film' }[kind]}"></i>`;
+            document.getElementById('ae-title-text').textContent = (a ? 'Sửa ' : 'Thêm ') + { event: 'Sự Kiện', news: 'Tin Tức', media: 'Ảnh / Video', plan: 'Kế Hoạch', report: 'Báo Cáo' }[kind];
+            document.getElementById('ae-icon').innerHTML = `<i class="fa-solid ${{ event: 'fa-calendar-days', news: 'fa-newspaper', media: 'fa-photo-film', plan: 'fa-clipboard-list', report: 'fa-chart-column' }[kind]}"></i>`;
             const val = (elId, v) => { document.getElementById(elId).value = v ?? ''; };
             val('ae-title', a?.title); val('ae-category', a?.category || (kind === 'news' ? 'phong-trao' : kind === 'media' ? 'tiet-doc' : 'ngay-hoi'));
             val('ae-date', a ? a.event_date : (kind === 'news' ? todayStr() : ''));
             val('ae-time', a?.time_text); val('ae-location', a?.location); val('ae-audience', a?.audience);
             val('ae-author', a ? a.author : currentUser?.name); val('ae-body', a?.body); val('ae-label', a?.label);
             document.getElementById('ae-register').checked = a ? !!a.allow_register : true;
+            val('ae-period', isDocKind(kind) ? a?.time_text : '');
+            document.getElementById('ae-private').checked = !!a?.is_private;
+            if (isDocKind(kind) && !a) val('ae-date', todayStr());
+            actRenderDocList();
             const mt = a?.media_type === 'youtube' || a?.media_type === 'facebook' ? 'link' : (a?.media_type || 'image');
             document.querySelectorAll('input[name="ae-mtype"]').forEach(i => { i.checked = i.value === mt; });
             val('ae-link', mt === 'link' ? a?.media_url : '');
@@ -3859,6 +4124,7 @@ addEventListener('resize',fit);
             const fail = msg => { err.textContent = msg; err.classList.remove('hidden'); };
             err.classList.add('hidden');
             const id = document.getElementById('ae-id').value, kind = document.getElementById('ae-kind').value;
+            if (isDocKind(kind)) return actSaveDoc(id, kind, fail);
             const g = elId => document.getElementById(elId).value.trim();
             const base = { kind, title: g('ae-title'), category: g('ae-category'), updated_at: new Date().toISOString() };
             if (!base.title) return fail(kind === 'media' ? 'Hãy nhập chú thích cho ảnh / video.' : 'Hãy nhập tiêu đề.');
@@ -3944,7 +4210,7 @@ addEventListener('resize',fit);
             if (!confirm(`Xóa "${a.title}"?${extra}`)) return;
             const { error } = await sb.from('activities').delete().eq('id', id);
             if (error) { showToast('Chưa xóa được: ' + friendlyError(error), 'error'); return; }
-            actRemoveFiles([a.cover_url, a.media_url]);
+            actRemoveFiles([a.cover_url, a.media_url, ...docFiles(a).map(f => f.url)]);
             actRegs = actRegs.filter(r => r.activity_id !== id);
             await loadActivities();
             showToast('Đã xóa.', 'info');
